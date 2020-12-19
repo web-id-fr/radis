@@ -1,0 +1,19 @@
+{
+    "name": "webid/radis",
+    "description": "Radis - Rewiew Apps Deployed In Seconds",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gabriel Pillet",
+            "email": "gabriel@web-id.fr"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "WebId\\Radis\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {}
+}
