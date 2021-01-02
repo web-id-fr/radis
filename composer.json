@@ -11,9 +11,16 @@
     ],
     "autoload": {
         "psr-4": {
-            "WebId\\Radis\\": "src/"
+            "WebId\\Radis\\": "src/",
+            "WebId\\Radis\\Tests\\": "tests/"
         }
     },
     "minimum-stability": "dev",
-    "require": {}
+    "require-dev": {
+        "phpstan/phpstan": "0.12.x-dev",
+        "nunomaduro/larastan": "0.6.x-dev",
+        "emielmolenaar/phpcs-laravel": "dev-master",
+        "phpunit/phpunit": "*",
+        "orchestra/testbench": "6.x-dev"
+    }
 }

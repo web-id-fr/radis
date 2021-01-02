@@ -1,0 +1,39 @@
+name:  Radis CI
+on: [push]
+jobs:
+  radis-ci:
+    runs-on: ubuntu-20.04
+    steps:
+
+      # Setup
+      - name: Setup PHP 7.4
+        uses: shivammathur/setup-php@v2
+        with:
+            php-version: '7.4'
+            tools: composer:v2
+
+      - uses: actions/checkout@v2
+
+      # Preparing environment
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-radis
+          restore-keys: ${{ runner.os }}-composer-radis
+
+      - name: Installing project
+        run: make install
+
+      - name: Running phpcs
+        run: make phpcs
+
+      - name: Running phpstan
+        run: make phpstan
+
+      - name: Running phpunit
+        run: make phpunit

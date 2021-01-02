@@ -3,7 +3,6 @@
 namespace WebId\Radis\Console\Commands;
 
 use Illuminate\Console\Command;
-use WebId\Radis\Hello;
 
 class DeployCommand extends Command
 {
@@ -38,8 +37,7 @@ class DeployCommand extends Command
      */
     public function handle()
     {
-        $hello = new Hello();
-        dump($hello());
+        dump('Hello');
 
         return 0;
     }
