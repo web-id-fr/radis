@@ -1,5 +1,5 @@
 {
-    "name": "webid/radis",
+    "name": "web-id/radis",
     "description": "Radis - Rewiew Apps Deployed In Seconds",
     "type": "project",
     "license": "MIT",
@@ -14,6 +14,15 @@
             "WebId\\Radis\\": "src/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "WebId\\Radis\\RadisProvider"
+            ]
+        }
+    },
     "minimum-stability": "dev",
-    "require": {}
+    "require": {
+        "laravel/forge-sdk": "^4.0@dev"
+    }
 }
