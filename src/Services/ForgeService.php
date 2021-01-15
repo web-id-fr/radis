@@ -138,13 +138,12 @@ class ForgeService
         ]);
 
 //        $this->forge->obtainLetsEncryptCertificate($forgeServer->id, $site->id, [
-//            "domains" => [$siteName.'.ireadit.io'],
+//            "domains" => [$featureDomain],
 //            "dns_provider" => [
 //                "type" => "digitalocean",
 //                "digitalocean_token" => config('radis.forge.digital_ocean_api_key'),
 //            ],
 //        ]);
-//        dump(6);
 
         return $site;
     }
@@ -157,6 +156,33 @@ class ForgeService
     public function updateSiteEnvFile(Server $forgeServer, Site $site, string $envContent)
     {
         $this->forge->updateSiteEnvironmentFile($forgeServer->id, $site->id, $envContent);
+    }
+
+    /**
+     * @param Server $forgeServer
+     * @param int $siteId
+     * @return Site|null
+     */
+    public function getSiteById(Server $forgeServer, int $siteId): ?Site
+    {
+        return $this->forge->site($forgeServer->id, $siteId);
+    }
+
+    /**
+     * @param Server $forgeServer
+     * @param string $siteName
+     * @return Site|null
+     */
+    public function getSiteBySiteName(Server $forgeServer, string $siteName): ?Site
+    {
+        $featureDomain = $this->getFeatureDomain($siteName);
+        foreach ($this->forge->sites($forgeServer->id) as $site) {
+            if ($site->name === $featureDomain) {
+                return $site;
+            }
+        }
+
+        return null;
     }
 
     /**

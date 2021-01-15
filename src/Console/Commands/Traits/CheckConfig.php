@@ -7,7 +7,7 @@ trait CheckConfig
     /**
      * @param $key
      */
-    private function checkConfig($key)
+    protected function checkConfig($key)
     {
         if (empty(config($key))) {
             throw new \RuntimeException(sprintf(

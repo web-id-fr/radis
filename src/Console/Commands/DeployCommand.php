@@ -2,15 +2,11 @@
 
 namespace WebId\Radis\Console\Commands;
 
-use Illuminate\Console\Command;
-use WebId\Radis\Console\Commands\Traits\CheckConfig;
 use WebId\Radis\Console\Commands\Traits\HasStub;
-use WebId\Radis\Services\ForgeService;
 
-class DeployCommand extends Command
+class DeployCommand extends ForgeAbstractCommand
 {
-    use CheckConfig,
-        HasStub;
+    use HasStub;
 
     /** @var string  */
     protected $signature = 'radis:deploy
@@ -21,19 +17,6 @@ class DeployCommand extends Command
     /** @var string  */
     protected $description = 'Deploy a Review App';
 
-    /** @var ForgeService  */
-    protected $forgeService;
-
-    /**
-     * @param ForgeService $forgeService
-     */
-    public function __construct(ForgeService $forgeService)
-    {
-        parent::__construct();
-
-        $this->forgeService = $forgeService;
-    }
-
     /**
      * Execute the console command.
      *
@@ -41,40 +24,30 @@ class DeployCommand extends Command
      */
     public function handle()
     {
-        $this->checkConfig('radis.forge.token');
-        $this->checkConfig('radis.forge.server_name');
-        $this->checkConfig('radis.forge.server_domain');
         $this->checkConfig('radis.forge.digital_ocean_api_key');
         $this->checkConfig('radis.git_repository');
 
-        $gitBranch = $this->argument('git_branch');
         $siteName = $this->argument('site_name');
+        $gitBranch = $this->argument('git_branch');
         $databaseName = $this->option('database');
-        $forgeServer = $this->forgeService->getForgeServer();
 
         $featureDomain = $this->forgeService->getFeatureDomain($siteName);
-        $featureDatabaseName = $this->forgeService->getFeatureDatabase($siteName, $databaseName);
-        $featureDatabaseUser = $this->forgeService->getFeatureDatabaseUser($siteName, $databaseName);
-        $featureDatabasePassword = 'password';
 
         $this->destroyExisting($siteName, $databaseName);
 
         $this->info('Creating forge site : "'.$featureDomain.'"...');
-        $site = $this->forgeService->createForgeSite($forgeServer, $siteName, $gitBranch, $databaseName);
+        $site = $this->forgeService->createForgeSite($this->forgeServer, $siteName, $gitBranch, $databaseName);
 
-        $envStub = $this->getStub('env.stub');
-        $this->replaceSiteName($envStub, ucfirst($siteName))
-            ->replaceSiteKey($envStub)
-            ->replaceSiteUrl($envStub, 'https://' . $featureDomain)
-            ->replaceSiteDatabaseName($envStub, $featureDatabaseName)
-            ->replaceSiteDatabaseUser($envStub, $featureDatabaseUser)
-            ->replaceSiteDatabasePassword($envStub, $featureDatabasePassword);
-        $this->forgeService->updateSiteEnvFile($forgeServer, $site, $envStub);
+        $this->callSilent('radis:env', [
+            'site_name' => $siteName,
+            '--site' => $site->id
+        ]);
 
-        $deployScriptStub = $this->getStub('deployScript.stub');
-        $this->replaceSiteUrl($deployScriptStub, $featureDomain)
-            ->replaceGitBranch($deployScriptStub, $gitBranch);
-        $site->updateDeploymentScript($deployScriptStub);
+        $this->callSilent('radis:deploy-script', [
+            'site_name' => $siteName,
+            'git_branch' => $gitBranch,
+            '--site' => $site->id
+        ]);
 
         $site->deploySite();
 

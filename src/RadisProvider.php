@@ -4,7 +4,9 @@ namespace WebId\Radis;
 
 use Illuminate\Support\ServiceProvider;
 use WebId\Radis\Console\Commands\DeployCommand;
+use WebId\Radis\Console\Commands\DeployScriptCommand;
 use WebId\Radis\Console\Commands\DestroyCommand;
+use WebId\Radis\Console\Commands\EnvCommand;
 use WebId\Radis\Services\ForgeService;
 
 class RadisProvider extends ServiceProvider
@@ -31,6 +33,8 @@ class RadisProvider extends ServiceProvider
             $this->commands([
                 DeployCommand::class,
                 DestroyCommand::class,
+                EnvCommand::class,
+                DeployScriptCommand::class
             ]);
         }
     }
