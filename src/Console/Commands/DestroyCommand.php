@@ -50,8 +50,8 @@ class DestroyCommand extends Command
         $forgeServer = $this->forgeService->getForgeServer();
 
         if ($this->forgeService->deleteForgeSiteIfExists($forgeServer, $siteName)) {
-            $fullSiteName = $this->forgeService->getFeatureDomain($siteName);
-            $this->comment('Deleting forge site : "'.$fullSiteName.'"...');
+            $featureDomain = $this->forgeService->getFeatureDomain($siteName);
+            $this->comment('Deleting forge site : "'.$featureDomain.'"...');
         }
 
         if ($this->forgeService->deleteForgeDatabaseIfExists($forgeServer, $siteName, $databaseName)) {

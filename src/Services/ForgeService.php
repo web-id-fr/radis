@@ -108,11 +108,12 @@ class ForgeService
         $featureDatabaseName = $this->getFeatureDatabase($siteName, $databaseName);
         $featureDatabaseUser = $this->getFeatureDatabaseUser($siteName, $databaseName);
         $featureDatabasePassword = $this->getFeatureDatabasePassword();
+        $featureDomain = $this->getFeatureDomain($siteName);
 
         $site = $this->forge->setTimeout(120)->createSite(
             $forgeServer->id,
             [
-                "domain" => $this->getFeatureDomain($siteName),
+                "domain" => $featureDomain,
                 "project_type" => "php",
                 "aliases" => [],
                 "directory" => '/public',

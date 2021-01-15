@@ -55,7 +55,8 @@ class DeployCommand extends Command
 
         $this->destroyExisting($siteName, $databaseName);
 
-        $this->info('Creating forge site "'.$siteName.'"...');
+        $featureDomain = $this->forgeService->getFeatureDomain($siteName);
+        $this->info('Creating forge site : "'.$featureDomain.'"...');
         $this->forgeService->createForgeSite($forgeServer, $siteName, $gitBranch, $databaseName);
 
         $this->info("The review app `${siteName}` will be created with the branch `${gitBranch}`");
