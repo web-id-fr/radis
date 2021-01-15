@@ -241,7 +241,7 @@ class ForgeService
      * @param string $siteName
      * @return string
      */
-    protected function getFeatureDomain(string $siteName): string
+    public function getFeatureDomain(string $siteName): string
     {
         return $siteName . '-feature.' . config('radis.forge.server_domain');
     }

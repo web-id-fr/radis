@@ -50,17 +50,18 @@ class DestroyCommand extends Command
         $forgeServer = $this->forgeService->getForgeServer();
 
         if ($this->forgeService->deleteForgeSiteIfExists($forgeServer, $siteName)) {
-            $this->comment('Deleting forge site "'.$siteName.'"...');
+            $fullSiteName = $this->forgeService->getFeatureDomain($siteName);
+            $this->comment('Deleting forge site : "'.$fullSiteName.'"...');
         }
 
         if ($this->forgeService->deleteForgeDatabaseIfExists($forgeServer, $siteName, $databaseName)) {
             $featureDatabaseName = $this->forgeService->getFeatureDatabase($siteName, $databaseName);
-            $this->comment('Deleting forge database "'.$featureDatabaseName.'"...');
+            $this->comment('Deleting forge database : "'.$featureDatabaseName.'"...');
         }
 
         if ($this->forgeService->deleteForgeDatabaseUserIfExists($forgeServer, $siteName, $databaseName)) {
             $featureDatabaseUser = $this->forgeService->getFeatureDatabaseUser($siteName, $databaseName);
-            $this->comment('Deleting forge database user "'.$featureDatabaseUser.'"...');
+            $this->comment('Deleting forge database user : "'.$featureDatabaseUser.'"...');
         }
 
         return 0;
