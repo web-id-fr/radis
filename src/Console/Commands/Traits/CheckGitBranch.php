@@ -11,12 +11,12 @@ trait CheckGitBranch
     protected function checkGitBranch(string $gitBranch): bool
     {
         $repo = config('radis.git_repository');
-        $gitBranchExist = exec("git ls-remote --heads git@github.com:$repo.git $gitBranch | wc -l ");
+        $gitBranchExist = (bool) intval(exec("git ls-remote --heads git@github.com:$repo.git $gitBranch | wc -l "));
 
-        if (!$gitBranchExist == 1) {
+        if (!$gitBranchExist) {
             $this->error("The git branch : $gitBranch does not exist !");
         }
 
-        return $gitBranchExist == 1;
+        return $gitBranchExist;
     }
 }

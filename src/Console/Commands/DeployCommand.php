@@ -31,7 +31,7 @@ class DeployCommand extends ForgeAbstractCommand
 
         $siteName = $this->argument('site_name');
         $gitBranch = $this->argument('git_branch');
-        if ($this->checkGitBranch($gitBranch)) {
+        if (!$this->checkGitBranch($gitBranch)) {
             return 0;
         }
         $databaseName = $this->option('database');
