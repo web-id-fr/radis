@@ -3,14 +3,14 @@
 namespace WebId\Radis\Console\Commands;
 
 use Illuminate\Console\Command;
-use Laravel\Forge\Forge;
-use Laravel\Forge\Resources\Server;
 use WebId\Radis\Console\Commands\Traits\CheckConfig;
+use WebId\Radis\Console\Commands\Traits\HasStub;
 use WebId\Radis\Services\ForgeService;
 
 class DeployCommand extends Command
 {
-    use CheckConfig;
+    use CheckConfig,
+        HasStub;
 
     /** @var string  */
     protected $signature = 'radis:deploy
@@ -50,14 +50,33 @@ class DeployCommand extends Command
         $gitBranch = $this->argument('git_branch');
         $siteName = $this->argument('site_name');
         $databaseName = $this->option('database');
-
         $forgeServer = $this->forgeService->getForgeServer();
+
+        $featureDomain = $this->forgeService->getFeatureDomain($siteName);
+        $featureDatabaseName = $this->forgeService->getFeatureDatabase($siteName, $databaseName);
+        $featureDatabaseUser = $this->forgeService->getFeatureDatabaseUser($siteName, $databaseName);
+        $featureDatabasePassword = 'password';
 
         $this->destroyExisting($siteName, $databaseName);
 
-        $featureDomain = $this->forgeService->getFeatureDomain($siteName);
         $this->info('Creating forge site : "'.$featureDomain.'"...');
-        $this->forgeService->createForgeSite($forgeServer, $siteName, $gitBranch, $databaseName);
+        $site = $this->forgeService->createForgeSite($forgeServer, $siteName, $gitBranch, $databaseName);
+
+        $envStub = $this->getStub('env.stub');
+        $this->replaceSiteName($envStub, ucfirst($siteName))
+            ->replaceSiteKey($envStub)
+            ->replaceSiteUrl($envStub, 'https://' . $featureDomain)
+            ->replaceSiteDatabaseName($envStub, $featureDatabaseName)
+            ->replaceSiteDatabaseUser($envStub, $featureDatabaseUser)
+            ->replaceSiteDatabasePassword($envStub, $featureDatabasePassword);
+        $this->forgeService->updateSiteEnvFile($forgeServer, $site, $envStub);
+
+        $deployScriptStub = $this->getStub('deployScript.stub');
+        $this->replaceSiteUrl($deployScriptStub, $featureDomain)
+            ->replaceGitBranch($deployScriptStub, $gitBranch);
+        $site->updateDeploymentScript($deployScriptStub);
+
+        $site->deploySite();
 
         $this->info("The review app `${siteName}` will be created with the branch `${gitBranch}`");
 

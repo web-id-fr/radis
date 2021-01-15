@@ -3,8 +3,6 @@
 namespace WebId\Radis\Console\Commands;
 
 use Illuminate\Console\Command;
-use Laravel\Forge\Forge;
-use Laravel\Forge\Resources\Server;
 use WebId\Radis\Console\Commands\Traits\CheckConfig;
 use WebId\Radis\Services\ForgeService;
 
