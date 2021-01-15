@@ -36,7 +36,7 @@ class EnvCommand extends ForgeAbstractCommand
         $featureDomain = $this->forgeService->getFeatureDomain($siteName);
         $featureDatabaseName = $this->forgeService->getFeatureDatabase($siteName, $databaseName);
         $featureDatabaseUser = $this->forgeService->getFeatureDatabaseUser($siteName, $databaseName);
-        $featureDatabasePassword = 'password';
+        $featureDatabasePassword = $this->forgeService->getFeatureDatabasePassword();
 
         $envStub = $this->getStub('env.stub');
         $this->replaceSiteName($envStub, ucfirst($siteName))

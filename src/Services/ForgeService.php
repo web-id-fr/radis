@@ -132,7 +132,7 @@ class ForgeService
 
         $site->installGitRepository([
             "provider" => "github",
-            "repository" => config('radis.git_repository'), // @TODO env // @TODO vérifier que la branche existe
+            "repository" => config('radis.git_repository'),
             "branch" => $gitBranch,
             "composer" => false
         ]);
@@ -217,9 +217,9 @@ class ForgeService
     /**
      * @return string
      */
-    private function getFeatureDatabasePassword(): string
+    public function getFeatureDatabasePassword(): string
     {
-        return config('radis.forge.database_password', Hash::make(Str::random(12)));
+        return config('radis.forge.database_password');
     }
 
     /**
