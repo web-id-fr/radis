@@ -2,7 +2,6 @@
 
 namespace WebId\Radis\Console\Commands;
 
-use Laravel\Forge\Resources\Site;
 use WebId\Radis\Console\Commands\Traits\HasStub;
 
 class EnvCommand extends ForgeAbstractCommand

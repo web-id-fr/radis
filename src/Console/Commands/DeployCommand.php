@@ -2,11 +2,13 @@
 
 namespace WebId\Radis\Console\Commands;
 
+use WebId\Radis\Console\Commands\Traits\CheckGitBranch;
 use WebId\Radis\Console\Commands\Traits\HasStub;
 
 class DeployCommand extends ForgeAbstractCommand
 {
-    use HasStub;
+    use HasStub,
+        CheckGitBranch;
 
     /** @var string  */
     protected $signature = 'radis:deploy
@@ -29,6 +31,9 @@ class DeployCommand extends ForgeAbstractCommand
 
         $siteName = $this->argument('site_name');
         $gitBranch = $this->argument('git_branch');
+        if ($this->checkGitBranch($gitBranch)) {
+            return 0;
+        }
         $databaseName = $this->option('database');
 
         $featureDomain = $this->forgeService->getFeatureDomain($siteName);

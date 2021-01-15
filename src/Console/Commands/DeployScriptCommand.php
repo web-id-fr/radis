@@ -2,11 +2,13 @@
 
 namespace WebId\Radis\Console\Commands;
 
+use WebId\Radis\Console\Commands\Traits\CheckGitBranch;
 use WebId\Radis\Console\Commands\Traits\HasStub;
 
 class DeployScriptCommand extends ForgeAbstractCommand
 {
-    use HasStub;
+    use HasStub,
+        CheckGitBranch;
 
     /** @var string */
     protected $signature = 'radis:deploy-script
@@ -27,6 +29,9 @@ class DeployScriptCommand extends ForgeAbstractCommand
         $siteName = $this->argument('site_name');
         $gitBranch = $this->argument('git_branch');
         $siteId = $this->option('site');
+        if ($this->checkGitBranch($gitBranch)) {
+            return 0;
+        }
 
         $site = $this->getSite($siteName, $siteId);
         if (!$site) {
