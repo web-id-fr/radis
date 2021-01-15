@@ -3,6 +3,7 @@
 namespace WebId\Radis;
 
 use Illuminate\Support\ServiceProvider;
+use WebId\Radis\Console\Commands\CreateReviewAppCommand;
 use WebId\Radis\Console\Commands\DeployCommand;
 use WebId\Radis\Console\Commands\DeployScriptCommand;
 use WebId\Radis\Console\Commands\DestroyCommand;
@@ -31,10 +32,11 @@ class RadisProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->bootForConsole();
             $this->commands([
-                DeployCommand::class,
+                CreateReviewAppCommand::class,
                 DestroyCommand::class,
                 EnvCommand::class,
-                DeployScriptCommand::class
+                DeployScriptCommand::class,
+                DeployCommand::class,
             ]);
         }
     }
