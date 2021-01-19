@@ -8,7 +8,6 @@ use WebId\Radis\Console\Commands\DeployCommand;
 use WebId\Radis\Console\Commands\DeployScriptCommand;
 use WebId\Radis\Console\Commands\DestroyCommand;
 use WebId\Radis\Console\Commands\EnvCommand;
-use WebId\Radis\Services\ForgeService;
 
 class RadisProvider extends ServiceProvider
 {
@@ -51,6 +50,12 @@ class RadisProvider extends ServiceProvider
         // Publishing the configuration file.
         $this->publishes([
             __DIR__.'/../config/radis.php' => config_path('radis.php'),
-        ], 'radis.config');
+        ], 'config');
+
+        // Publishing stubs.
+        $this->publishes([
+            __DIR__.'/Stubs/env.stub' => base_path('stubs/env.stub'),
+            __DIR__.'/Stubs/deployScript.stub' => base_path('stubs/deployScript.stub'),
+        ], 'stub');
     }
 }
