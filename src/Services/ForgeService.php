@@ -137,6 +137,8 @@ class ForgeService
             "composer" => false
         ]);
 
+        $site->enableQuickDeploy();
+
 //        $this->forge->obtainLetsEncryptCertificate($forgeServer->id, $site->id, [
 //            "domains" => [$featureDomain],
 //            "dns_provider" => [
