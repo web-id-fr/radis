@@ -15,6 +15,10 @@ trait HasStub
     {
         $files = app(Filesystem::class);
         try {
+            if ($files->exists(base_path("stubs/$fileName"))) {
+                return $files->get(base_path("stubs/$fileName"));
+            }
+
             return $files->get(__DIR__ . "/../../../Stubs/$fileName");
         } catch (\Exception $e) {
             report($e);
