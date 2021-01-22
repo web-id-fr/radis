@@ -8,8 +8,8 @@ use WebId\Radis\Console\Commands\Traits\HasStub;
 
 class DeployScriptCommand extends ForgeAbstractCommand
 {
-    use HasStub,
-        CheckGitBranch;
+    use HasStub;
+    use CheckGitBranch;
 
     /** @var string */
     protected $signature = 'radis:deploy-script
@@ -31,12 +31,12 @@ class DeployScriptCommand extends ForgeAbstractCommand
         $gitBranch = $this->argument('git_branch');
         $siteId = (int) $this->option('site');
 
-        if (!$this->checkGitBranch($gitBranch)) {
+        if (! $this->checkGitBranch($gitBranch)) {
             return 0;
         }
 
         $site = $this->getSite($siteName, $siteId);
-        if (!$site) {
+        if (! $site) {
             return 0;
         }
 

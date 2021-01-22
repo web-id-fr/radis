@@ -9,13 +9,13 @@ class EnvCommand extends ForgeAbstractCommand
 {
     use HasStub;
 
-    /** @var string  */
+    /** @var string */
     protected $signature = 'radis:env
                             {site_name : Name to set on forge}
                             {--database=} : Database name on forge
                             {--site=} : Site ID on forge';
 
-    /** @var string  */
+    /** @var string */
     protected $description = 'Update environment file on review App';
 
     /**
@@ -30,7 +30,7 @@ class EnvCommand extends ForgeAbstractCommand
         $siteId = (int) $this->option('site');
 
         $site = $this->getSite($siteName, $siteId);
-        if (!$site) {
+        if (! $site) {
             return 0;
         }
 

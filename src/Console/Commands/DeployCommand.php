@@ -4,12 +4,12 @@ namespace WebId\Radis\Console\Commands;
 
 class DeployCommand extends ForgeAbstractCommand
 {
-    /** @var string  */
+    /** @var string */
     protected $signature = 'radis:update
                             {site_name : Site name on forge}
                             {--site=} : Site ID on forge';
 
-    /** @var string  */
+    /** @var string */
     protected $description = 'Deploy existing Review App';
 
     /**
@@ -24,7 +24,7 @@ class DeployCommand extends ForgeAbstractCommand
         $siteId = (int) $this->option('site');
 
         $site = $this->getSite($siteName, $siteId);
-        if (!$site) {
+        if (! $site) {
             return 0;
         }
 

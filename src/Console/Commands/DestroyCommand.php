@@ -6,12 +6,12 @@ use WebId\Radis\Classes\ForgeFormatter;
 
 class DestroyCommand extends ForgeAbstractCommand
 {
-    /** @var string  */
+    /** @var string */
     protected $signature = 'radis:destroy
                             {site_name : Name to set on forge}
                             {--database=} : Database name on forge';
 
-    /** @var string  */
+    /** @var string */
     protected $description = 'Destroy a Review App';
 
     /**
@@ -46,10 +46,12 @@ class DestroyCommand extends ForgeAbstractCommand
 
         if ($hasDestroy) {
             $this->info('Site ' . $siteName . ' fully destroyed !');
+
             return 0;
         }
 
         $this->info('Nothing to destroy');
+
         return 0;
     }
 }

@@ -14,6 +14,7 @@ trait HasStub
     protected function getStub(string $fileName): string
     {
         $files = app(Filesystem::class);
+
         try {
             if ($files->exists(base_path("stubs/$fileName"))) {
                 return $files->get(base_path("stubs/$fileName"));
@@ -22,6 +23,7 @@ trait HasStub
             return $files->get(__DIR__ . "/../../../Stubs/$fileName");
         } catch (\Exception $e) {
             report($e);
+
             return '';
         }
     }
@@ -34,6 +36,7 @@ trait HasStub
     public function replaceSiteName(string &$stub, string $siteName)
     {
         $stub = str_replace('STUB_SITE_NAME', $siteName, $stub);
+
         return $this;
     }
 
@@ -44,6 +47,7 @@ trait HasStub
     public function replaceSiteKey(string &$stub)
     {
         $stub = str_replace('STUB_SITE_KEY', $this->generateRandomKey(), $stub);
+
         return $this;
     }
 
@@ -55,6 +59,7 @@ trait HasStub
     public function replaceSiteUrl(string &$stub, string $siteUrl)
     {
         $stub = str_replace('STUB_SITE_URL', $siteUrl, $stub);
+
         return $this;
     }
 
@@ -66,6 +71,7 @@ trait HasStub
     public function replaceSiteDatabaseName(string &$stub, string $databaseName)
     {
         $stub = str_replace('STUB_SITE_DB_NAME', $databaseName, $stub);
+
         return $this;
     }
 
@@ -77,6 +83,7 @@ trait HasStub
     public function replaceSiteDatabaseUser(string &$stub, string $databaseUser)
     {
         $stub = str_replace('STUB_SITE_DB_USER', $databaseUser, $stub);
+
         return $this;
     }
 
@@ -88,6 +95,7 @@ trait HasStub
     public function replaceSiteDatabasePassword(string &$stub, string $databasePassword)
     {
         $stub = str_replace('STUB_SITE_DB_PASSWORD', $databasePassword, $stub);
+
         return $this;
     }
 
@@ -99,6 +107,7 @@ trait HasStub
     public function replaceGitBranch(string &$stub, string $gitBranch)
     {
         $stub = str_replace('STUB_GIT_BRANCH', $gitBranch, $stub);
+
         return $this;
     }
 
@@ -109,7 +118,7 @@ trait HasStub
     protected function generateRandomKey()
     {
         return 'base64:'.base64_encode(
-                Encrypter::generateKey(config('app.cipher'))
-            );
+            Encrypter::generateKey(config('app.cipher'))
+        );
     }
 }

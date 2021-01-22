@@ -13,7 +13,7 @@ trait CheckGitBranch
         $repo = config('radis.git_repository');
         $gitBranchExist = (bool) intval(exec("git ls-remote --heads git@github.com:$repo.git $gitBranch | wc -l "));
 
-        if (!$gitBranchExist) {
+        if (! $gitBranchExist) {
             $this->error("The git branch : $gitBranch does not exist !");
         }
 

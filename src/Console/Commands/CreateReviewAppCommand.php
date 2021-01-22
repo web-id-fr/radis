@@ -8,16 +8,16 @@ use WebId\Radis\Console\Commands\Traits\HasStub;
 
 class CreateReviewAppCommand extends ForgeAbstractCommand
 {
-    use HasStub,
-        CheckGitBranch;
+    use HasStub;
+    use CheckGitBranch;
 
-    /** @var string  */
+    /** @var string */
     protected $signature = 'radis:create
                             {site_name : Name to set on forge}
                             {git_branch : Name of the git branch to deploy}
                             {--database=} : Database name on forge';
 
-    /** @var string  */
+    /** @var string */
     protected $description = 'Create a Review App';
 
     /**
@@ -32,7 +32,7 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
 
         $siteName = $this->argument('site_name');
         $gitBranch = $this->argument('git_branch');
-        if (!$this->checkGitBranch($gitBranch)) {
+        if (! $this->checkGitBranch($gitBranch)) {
             return 0;
         }
         $databaseName = $this->option('database');
@@ -48,14 +48,14 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
         $this->comment('Updating site env...');
         $this->callSilent('radis:env', [
             'site_name' => $siteName,
-            '--site' => $site->id
+            '--site' => $site->id,
         ]);
 
         $this->comment('Updating site script deploy...');
         $this->callSilent('radis:deploy-script', [
             'site_name' => $siteName,
             'git_branch' => $gitBranch,
-            '--site' => $site->id
+            '--site' => $site->id,
         ]);
 
         $this->comment('Deploying site...');

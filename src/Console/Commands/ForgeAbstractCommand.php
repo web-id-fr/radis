@@ -12,7 +12,7 @@ abstract class ForgeAbstractCommand extends Command
 {
     use CheckConfig;
 
-    /** @var ForgeService  */
+    /** @var ForgeService */
     protected $forgeService;
 
     /** @var Server */
@@ -46,7 +46,7 @@ abstract class ForgeAbstractCommand extends Command
             } catch (\Exception $e) {
                 report($e);
                 $this->error('No site found with this ID : ' . $siteId);
-                if (!$this->confirm('Would you like to try site name instead site ID ?')) {
+                if (! $this->confirm('Would you like to try site name instead site ID ?')) {
                     return null;
                 }
             }
@@ -57,6 +57,7 @@ abstract class ForgeAbstractCommand extends Command
         } catch (\Exception $e) {
             report($e);
             $this->error('No site found with this site name : ' . $siteName);
+
             return null;
         }
     }

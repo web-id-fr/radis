@@ -32,7 +32,9 @@ class ForgeServiceTesting implements ForgeServiceContract
         return $this->createFakeSite();
     }
 
-    public function updateSiteEnvFile(Server $forgeServer, Site $site, string $envContent) {}
+    public function updateSiteEnvFile(Server $forgeServer, Site $site, string $envContent)
+    {
+    }
 
     public function getSiteById(Server $forgeServer, int $siteId): ?Site
     {
@@ -50,6 +52,7 @@ class ForgeServiceTesting implements ForgeServiceContract
         $server->id = 1;
         $server->credentialId = 1;
         $server->name = 'fakeServer';
+
         return $server;
     }
 
@@ -59,6 +62,7 @@ class ForgeServiceTesting implements ForgeServiceContract
         $site->id = 1;
         $site->serverId = 1;
         $site->name = 'fakeSite';
+
         return $site;
     }
 }

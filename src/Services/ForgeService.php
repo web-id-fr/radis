@@ -11,7 +11,7 @@ use WebId\Radis\Classes\ForgeFormatter;
 
 class ForgeService implements ForgeServiceContract
 {
-    /** @var Forge  */
+    /** @var Forge */
     private $forge;
 
     public function __construct()
@@ -70,6 +70,7 @@ class ForgeService implements ForgeServiceContract
         $database = $this->searchDatabase($forgeServer, $featureDatabaseName);
         if ($database) {
             $database->delete();
+
             return true;
         }
 
@@ -89,6 +90,7 @@ class ForgeService implements ForgeServiceContract
         $databaseUser = $this->searchDatabaseUser($forgeServer, $featureDatabaseUser);
         if ($databaseUser) {
             $databaseUser->delete();
+
             return true;
         }
 
@@ -126,14 +128,14 @@ class ForgeService implements ForgeServiceContract
         $this->forge->createDatabaseUser($forgeServer->id, [
             "name" => $featureDatabaseUser,
             "password" => $featureDatabasePassword,
-            "databases" => [$database->id]
+            "databases" => [$database->id],
         ], $wait = true);
 
         $site->installGitRepository([
             "provider" => "github",
             "repository" => config('radis.git_repository'),
             "branch" => $gitBranch,
-            "composer" => false
+            "composer" => false,
         ]);
 
         $site->enableQuickDeploy();
