@@ -8,8 +8,12 @@ $FORGE_COMPOSER install --no-ansi --no-dev --no-interaction --no-plugins --no-pr
 if [ -f artisan ]; then
     $FORGE_PHP artisan migrate:fresh --seed --force
     $FORGE_PHP artisan storage:link
-    $FORGE_PHP artisan nova:publish
-    $FORGE_PHP artisan view:clear
+
+    # Clear all caches
+    $FORGE_PHP artisan cache:clear
+    $FORGE_PHP artisan route:clear
+    $FORGE_PHP artisan config:clear
+    $FORGE_PHP artisan event:clear
 fi
 
 npm i
