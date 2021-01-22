@@ -21,7 +21,7 @@ class TestCase extends Orchestra
         config()->set('radis.forge', [
             'token' => 'thisIsFakeToken',
             'server_name' => 'fakeSite',
-            'server_domain' => 'fake-site.ninja',
+            'server_domain' => 'fake.ninja',
             'database_name' => 'fake',
             'database_password' => 'passwordVerySecure',
             'lets_encrypt_type' => 'digitalocean',
