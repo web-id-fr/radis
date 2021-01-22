@@ -26,7 +26,6 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
      */
     public function handle()
     {
-        $this->checkConfig('radis.forge.digital_ocean_api_key');
         $this->checkConfig('radis.git_repository');
 
         $siteName = $this->argument('site_name');

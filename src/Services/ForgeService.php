@@ -2,8 +2,6 @@
 
 namespace WebId\Radis\Services;
 
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Laravel\Forge\Forge;
 use Laravel\Forge\Resources\Database;
 use Laravel\Forge\Resources\DatabaseUser;
@@ -139,13 +137,15 @@ class ForgeService
 
         $site->enableQuickDeploy();
 
-//        $this->forge->obtainLetsEncryptCertificate($forgeServer->id, $site->id, [
-//            "domains" => [$featureDomain],
-//            "dns_provider" => [
-//                "type" => "digitalocean",
-//                "digitalocean_token" => config('radis.forge.digital_ocean_api_key'),
-//            ],
-//        ]);
+        if (config('radis.forge.lets_encrypt_type') && config('radis.forge.lets_encrypt_api_key')) {
+            $this->forge->obtainLetsEncryptCertificate($forgeServer->id, $site->id, [
+                "domains" => [$featureDomain],
+                "dns_provider" => [
+                    "type" => config('radis.forge.lets_encrypt_type'),
+                    "digitalocean_token" => config('radis.forge.lets_encrypt_api_key'),
+                ],
+            ]);
+        }
 
         return $site;
     }
