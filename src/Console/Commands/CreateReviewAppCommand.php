@@ -23,6 +23,7 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
      * Execute the console command.
      *
      * @return int
+     * @throws \Exception
      */
     public function handle()
     {
@@ -38,6 +39,8 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
         $featureDomain = $this->forgeService->getFeatureDomain($siteName);
 
         $this->destroyExisting($siteName, $databaseName);
+
+        $this->waitingDestroy($siteName);
 
         $this->info('Creating forge site : "'.$featureDomain.'"...');
         $site = $this->forgeService->createForgeSite($this->forgeServer, $siteName, $gitBranch, $databaseName);
@@ -73,5 +76,21 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
             $commandDestroy['--database'] = $databaseName;
         }
         $this->call('radis:destroy', $commandDestroy);
+    }
+
+    /**
+     * @param string $siteName
+     * @throws \Exception
+     */
+    private function waitingDestroy(string $siteName)
+    {
+        for ($i = 1; $i <= 10; $i++) {
+            if ($this->getSite($siteName) === null) {
+                return;
+            }
+            sleep(1);
+        }
+
+        throw new \Exception('Site not destroy or lazy, try to restart command.');
     }
 }
