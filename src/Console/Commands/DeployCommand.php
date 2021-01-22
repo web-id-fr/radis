@@ -21,7 +21,7 @@ class DeployCommand extends ForgeAbstractCommand
     {
         $siteName = $this->argument('site_name');
 
-        $siteId = $this->option('site');
+        $siteId = (int) $this->option('site');
 
         $site = $this->getSite($siteName, $siteId);
         if (!$site) {
@@ -34,6 +34,7 @@ class DeployCommand extends ForgeAbstractCommand
 
         $this->info("The review app `${siteName}` will be deployed");
 
+        return 0;
     }
 
     /**

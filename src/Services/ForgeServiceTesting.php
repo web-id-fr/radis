@@ -46,7 +46,7 @@ class ForgeServiceTesting implements ForgeServiceContract
 
     protected function createFakeServer(): Server
     {
-        $server = new Server();
+        $server = new Server([]);
         $server->id = 1;
         $server->credentialId = 1;
         $server->name = 'fakeServer';
@@ -55,9 +55,10 @@ class ForgeServiceTesting implements ForgeServiceContract
 
     protected function createFakeSite(): Site
     {
-        $site = new Site();
+        $site = new Site([]);
         $site->id = 1;
         $site->serverId = 1;
         $site->name = 'fakeSite';
+        return $site;
     }
 }

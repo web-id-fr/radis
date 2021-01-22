@@ -29,7 +29,8 @@ class DeployScriptCommand extends ForgeAbstractCommand
     {
         $siteName = $this->argument('site_name');
         $gitBranch = $this->argument('git_branch');
-        $siteId = $this->option('site');
+        $siteId = (int) $this->option('site');
+
         if (!$this->checkGitBranch($gitBranch)) {
             return 0;
         }

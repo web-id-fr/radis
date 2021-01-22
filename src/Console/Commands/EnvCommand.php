@@ -27,7 +27,7 @@ class EnvCommand extends ForgeAbstractCommand
     {
         $siteName = $this->argument('site_name');
         $databaseName = $this->option('database');
-        $siteId = $this->option('site');
+        $siteId = (int) $this->option('site');
 
         $site = $this->getSite($siteName, $siteId);
         if (!$site) {

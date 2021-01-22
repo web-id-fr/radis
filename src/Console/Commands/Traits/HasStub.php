@@ -108,10 +108,8 @@ trait HasStub
      */
     protected function generateRandomKey()
     {
-        $laravel = $this->getLaravel();
-
         return 'base64:'.base64_encode(
-                Encrypter::generateKey($laravel['config']['app.cipher'])
+                Encrypter::generateKey(config('app.cipher'))
             );
     }
 }
