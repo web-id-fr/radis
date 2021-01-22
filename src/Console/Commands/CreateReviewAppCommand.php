@@ -39,24 +39,26 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
         $featureDomain = $this->forgeService->getFeatureDomain($siteName);
 
         $this->destroyExisting($siteName, $databaseName);
-
         $this->waitingDestroy($siteName);
 
-        $this->info('Creating forge site : "'.$featureDomain.'"...');
+        $this->comment('Creating forge site : "'.$featureDomain.'"...');
         $site = $this->forgeService->createForgeSite($this->forgeServer, $siteName, $gitBranch, $databaseName);
 
+        $this->comment('Updating site env...');
         $this->callSilent('radis:env', [
             'site_name' => $siteName,
             '--site' => $site->id
         ]);
 
+        $this->comment('Updating site script deploy...');
         $this->callSilent('radis:deploy-script', [
             'site_name' => $siteName,
             'git_branch' => $gitBranch,
             '--site' => $site->id
         ]);
 
-        $site->deploySite();
+        $this->comment('Deploying site...');
+        $site->deploySite(false);
 
         $this->info("The review app `${siteName}` will be created with the branch `${gitBranch}`");
 

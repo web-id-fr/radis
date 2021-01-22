@@ -28,9 +28,19 @@ class DeployCommand extends ForgeAbstractCommand
             return 0;
         }
 
-        $site->deploySite();
+        $this->comment("Send `${siteName}` deploying request ..");
+
+        $site->deploySite(false);
 
         $this->info("The review app `${siteName}` will be deployed");
 
+    }
+
+    /**
+     * @return int
+     */
+    protected function getCountTask(): int
+    {
+        return 0;
     }
 }

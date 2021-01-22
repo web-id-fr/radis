@@ -22,21 +22,32 @@ class DestroyCommand extends ForgeAbstractCommand
         $siteName = $this->argument('site_name');
         $databaseName = $this->option('database');
 
+        $hasDestroy = false;
+
         if ($this->forgeService->deleteForgeSiteIfExists($this->forgeServer, $siteName)) {
             $featureDomain = $this->forgeService->getFeatureDomain($siteName);
             $this->comment('Deleting forge site : "'.$featureDomain.'"...');
+            $hasDestroy = true;
         }
 
         if ($this->forgeService->deleteForgeDatabaseIfExists($this->forgeServer, $siteName, $databaseName)) {
             $featureDatabaseName = $this->forgeService->getFeatureDatabase($siteName, $databaseName);
             $this->comment('Deleting forge database : "'.$featureDatabaseName.'"...');
+            $hasDestroy = true;
         }
 
         if ($this->forgeService->deleteForgeDatabaseUserIfExists($this->forgeServer, $siteName, $databaseName)) {
             $featureDatabaseUser = $this->forgeService->getFeatureDatabaseUser($siteName, $databaseName);
             $this->comment('Deleting forge database user : "'.$featureDatabaseUser.'"...');
+            $hasDestroy = true;
         }
 
+        if ($hasDestroy) {
+            $this->info('Site ' . $siteName . ' fully destroyed !');
+            return 0;
+        }
+
+        $this->info('Nothing to destroy');
         return 0;
     }
 }

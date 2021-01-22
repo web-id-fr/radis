@@ -40,6 +40,8 @@ class DeployScriptCommand extends ForgeAbstractCommand
 
         $featureDomain = $this->forgeService->getFeatureDomain($siteName);
 
+        $this->comment("Updating deploy script..");
+
         $deployScriptStub = $this->getStub('deployScript.stub');
         $this->replaceSiteUrl($deployScriptStub, $featureDomain)
             ->replaceGitBranch($deployScriptStub, $gitBranch);
