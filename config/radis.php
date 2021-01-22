@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'driver' => env('RADIS_DRIVER'),
     'forge' => [
         'token' => env('FORGE_TOKEN'),
         'server_name' => env('FORGE_SERVER_NAME'),

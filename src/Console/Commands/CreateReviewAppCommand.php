@@ -2,6 +2,7 @@
 
 namespace WebId\Radis\Console\Commands;
 
+use WebId\Radis\Classes\ForgeFormatter;
 use WebId\Radis\Console\Commands\Traits\CheckGitBranch;
 use WebId\Radis\Console\Commands\Traits\HasStub;
 
@@ -36,7 +37,7 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
         }
         $databaseName = $this->option('database');
 
-        $featureDomain = $this->forgeService->getFeatureDomain($siteName);
+        $featureDomain = ForgeFormatter::getFeatureDomain($siteName);
 
         $this->destroyExisting($siteName, $databaseName);
         $this->waitingDestroy($siteName);

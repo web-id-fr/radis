@@ -2,6 +2,7 @@
 
 namespace WebId\Radis\Console\Commands;
 
+use WebId\Radis\Classes\ForgeFormatter;
 use WebId\Radis\Console\Commands\Traits\CheckGitBranch;
 use WebId\Radis\Console\Commands\Traits\HasStub;
 
@@ -38,7 +39,7 @@ class DeployScriptCommand extends ForgeAbstractCommand
             return 0;
         }
 
-        $featureDomain = $this->forgeService->getFeatureDomain($siteName);
+        $featureDomain = ForgeFormatter::getFeatureDomain($siteName);
 
         $this->comment("Updating deploy script..");
 

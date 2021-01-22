@@ -2,6 +2,7 @@
 
 namespace WebId\Radis\Console\Commands;
 
+use WebId\Radis\Classes\ForgeFormatter;
 use WebId\Radis\Console\Commands\Traits\HasStub;
 
 class EnvCommand extends ForgeAbstractCommand
@@ -33,10 +34,10 @@ class EnvCommand extends ForgeAbstractCommand
             return 0;
         }
 
-        $featureDomain = $this->forgeService->getFeatureDomain($siteName);
-        $featureDatabaseName = $this->forgeService->getFeatureDatabase($siteName, $databaseName);
-        $featureDatabaseUser = $this->forgeService->getFeatureDatabaseUser($siteName, $databaseName);
-        $featureDatabasePassword = $this->forgeService->getFeatureDatabasePassword();
+        $featureDomain = ForgeFormatter::getFeatureDomain($siteName);
+        $featureDatabaseName = ForgeFormatter::getFeatureDatabase($siteName, $databaseName);
+        $featureDatabaseUser = ForgeFormatter::getFeatureDatabaseUser($siteName, $databaseName);
+        $featureDatabasePassword = ForgeFormatter::getFeatureDatabasePassword();
 
         $this->comment("Updating environment..");
 

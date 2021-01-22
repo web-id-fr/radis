@@ -7,8 +7,9 @@ use Laravel\Forge\Resources\Database;
 use Laravel\Forge\Resources\DatabaseUser;
 use Laravel\Forge\Resources\Server;
 use Laravel\Forge\Resources\Site;
+use WebId\Radis\Classes\ForgeFormatter;
 
-class ForgeService
+class ForgeService implements ForgeServiceContract
 {
     /** @var Forge  */
     private $forge;
@@ -44,7 +45,7 @@ class ForgeService
      */
     public function deleteForgeSiteIfExists(Server $forgeServer, string $siteName): bool
     {
-        $featureDomain = $this->getFeatureDomain($siteName);
+        $featureDomain = ForgeFormatter::getFeatureDomain($siteName);
         foreach ($this->forge->sites($forgeServer->id) as $site) {
             if ($site->name === $featureDomain) {
                 $site->delete();
@@ -64,7 +65,7 @@ class ForgeService
      */
     public function deleteForgeDatabaseIfExists(Server $forgeServer, string $siteName, string $databaseName = null): bool
     {
-        $featureDatabaseName = $this->getFeatureDatabase($siteName, $databaseName);
+        $featureDatabaseName = ForgeFormatter::getFeatureDatabase($siteName, $databaseName);
 
         $database = $this->searchDatabase($forgeServer, $featureDatabaseName);
         if ($database) {
@@ -83,7 +84,7 @@ class ForgeService
      */
     public function deleteForgeDatabaseUserIfExists(Server $forgeServer, string $siteName, string $databaseName = null): bool
     {
-        $featureDatabaseUser = $this->getFeatureDatabaseUser($siteName, $databaseName);
+        $featureDatabaseUser = ForgeFormatter::getFeatureDatabaseUser($siteName, $databaseName);
 
         $databaseUser = $this->searchDatabaseUser($forgeServer, $featureDatabaseUser);
         if ($databaseUser) {
@@ -103,10 +104,10 @@ class ForgeService
      */
     public function createForgeSite(Server $forgeServer, string $siteName, string $gitBranch, string $databaseName = null): Site
     {
-        $featureDatabaseName = $this->getFeatureDatabase($siteName, $databaseName);
-        $featureDatabaseUser = $this->getFeatureDatabaseUser($siteName, $databaseName);
-        $featureDatabasePassword = $this->getFeatureDatabasePassword();
-        $featureDomain = $this->getFeatureDomain($siteName);
+        $featureDatabaseName = ForgeFormatter::getFeatureDatabase($siteName, $databaseName);
+        $featureDatabaseUser = ForgeFormatter::getFeatureDatabaseUser($siteName, $databaseName);
+        $featureDatabasePassword = ForgeFormatter::getFeatureDatabasePassword();
+        $featureDomain = ForgeFormatter::getFeatureDomain($siteName);
 
         $site = $this->forge->setTimeout(120)->createSite(
             $forgeServer->id,
@@ -177,7 +178,7 @@ class ForgeService
      */
     public function getSiteBySiteName(Server $forgeServer, string $siteName): ?Site
     {
-        $featureDomain = $this->getFeatureDomain($siteName);
+        $featureDomain = ForgeFormatter::getFeatureDomain($siteName);
         foreach ($this->forge->sites($forgeServer->id) as $site) {
             if ($site->name === $featureDomain) {
                 return $site;
@@ -185,43 +186,6 @@ class ForgeService
         }
 
         return null;
-    }
-
-    /**
-     * @param string $siteName
-     * @param string|null $databaseName
-     * @return string
-     */
-    public function getFeatureDatabase(string $siteName, string $databaseName = null): string
-    {
-        return $databaseName ?? $siteName . 'db';
-    }
-
-    /**
-     * @param string $siteName
-     * @param string|null $databaseName
-     * @return string
-     */
-    public function getFeatureDatabaseUser(string $siteName, string $databaseName = null): string
-    {
-        return $this->getFeatureDatabase($siteName, $databaseName) . 'user';
-    }
-
-    /**
-     * @param string $siteName
-     * @return string
-     */
-    public function getFeatureDomain(string $siteName): string
-    {
-        return $siteName . '-feature.' . config('radis.forge.server_domain');
-    }
-
-    /**
-     * @return string
-     */
-    public function getFeatureDatabasePassword(): string
-    {
-        return config('radis.forge.database_password');
     }
 
     /**

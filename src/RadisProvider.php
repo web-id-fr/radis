@@ -8,6 +8,9 @@ use WebId\Radis\Console\Commands\DeployCommand;
 use WebId\Radis\Console\Commands\DeployScriptCommand;
 use WebId\Radis\Console\Commands\DestroyCommand;
 use WebId\Radis\Console\Commands\EnvCommand;
+use WebId\Radis\Services\ForgeService;
+use WebId\Radis\Services\ForgeServiceContract;
+use WebId\Radis\Services\ForgeServiceTesting;
 
 class RadisProvider extends ServiceProvider
 {
@@ -18,6 +21,12 @@ class RadisProvider extends ServiceProvider
      */
     public function register()
     {
+        if (config('radis.driver') === 'fake') {
+            $this->app->bind(ForgeServiceContract::class, ForgeServiceTesting::class);
+        } else {
+            $this->app->bind(ForgeServiceContract::class, ForgeService::class);
+        }
+
         $this->mergeConfigFrom(__DIR__.'/../config/radis.php', 'radis');
     }
 

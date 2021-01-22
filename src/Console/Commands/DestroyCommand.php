@@ -2,6 +2,8 @@
 
 namespace WebId\Radis\Console\Commands;
 
+use WebId\Radis\Classes\ForgeFormatter;
+
 class DestroyCommand extends ForgeAbstractCommand
 {
     /** @var string  */
@@ -25,19 +27,19 @@ class DestroyCommand extends ForgeAbstractCommand
         $hasDestroy = false;
 
         if ($this->forgeService->deleteForgeSiteIfExists($this->forgeServer, $siteName)) {
-            $featureDomain = $this->forgeService->getFeatureDomain($siteName);
+            $featureDomain = ForgeFormatter::getFeatureDomain($siteName);
             $this->comment('Deleting forge site : "'.$featureDomain.'"...');
             $hasDestroy = true;
         }
 
         if ($this->forgeService->deleteForgeDatabaseIfExists($this->forgeServer, $siteName, $databaseName)) {
-            $featureDatabaseName = $this->forgeService->getFeatureDatabase($siteName, $databaseName);
+            $featureDatabaseName = ForgeFormatter::getFeatureDatabase($siteName, $databaseName);
             $this->comment('Deleting forge database : "'.$featureDatabaseName.'"...');
             $hasDestroy = true;
         }
 
         if ($this->forgeService->deleteForgeDatabaseUserIfExists($this->forgeServer, $siteName, $databaseName)) {
-            $featureDatabaseUser = $this->forgeService->getFeatureDatabaseUser($siteName, $databaseName);
+            $featureDatabaseUser = ForgeFormatter::getFeatureDatabaseUser($siteName, $databaseName);
             $this->comment('Deleting forge database user : "'.$featureDatabaseUser.'"...');
             $hasDestroy = true;
         }
