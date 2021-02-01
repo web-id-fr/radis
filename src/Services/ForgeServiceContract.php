@@ -17,7 +17,7 @@ interface ForgeServiceContract
 
     public function createForgeSite(Server $forgeServer, string $siteName, string $gitBranch, string $databaseName = null): Site;
 
-    public function updateSiteEnvFile(Server $forgeServer, Site $site, string $envContent);
+    public function updateSiteEnvFile(Server $forgeServer, Site $site, string $envContent): void;
 
     public function getSiteById(Server $forgeServer, int $siteId): ?Site;
 

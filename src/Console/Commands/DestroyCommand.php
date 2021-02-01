@@ -21,7 +21,9 @@ class DestroyCommand extends ForgeAbstractCommand
      */
     public function handle()
     {
+        /** @var string $siteName */
         $siteName = $this->argument('site_name');
+        /** @var string $databaseName */
         $databaseName = $this->option('database');
 
         $hasDestroy = false;

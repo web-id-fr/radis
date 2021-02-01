@@ -32,7 +32,7 @@ class ForgeServiceTesting implements ForgeServiceContract
         return $this->createFakeSite();
     }
 
-    public function updateSiteEnvFile(Server $forgeServer, Site $site, string $envContent)
+    public function updateSiteEnvFile(Server $forgeServer, Site $site, string $envContent): void
     {
     }
 

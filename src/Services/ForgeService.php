@@ -123,6 +123,7 @@ class ForgeService implements ForgeServiceContract
             ]
         );
 
+        /** @var Database $database */
         $database = $this->searchDatabase($forgeServer, $featureDatabaseName);
 
         $this->forge->createDatabaseUser($forgeServer->id, [
@@ -158,7 +159,7 @@ class ForgeService implements ForgeServiceContract
      * @param Site $site
      * @param string $envContent
      */
-    public function updateSiteEnvFile(Server $forgeServer, Site $site, string $envContent)
+    public function updateSiteEnvFile(Server $forgeServer, Site $site, string $envContent): void
     {
         $this->forge->updateSiteEnvironmentFile($forgeServer->id, $site->id, $envContent);
     }

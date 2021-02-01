@@ -27,15 +27,18 @@ class DeployScriptCommand extends ForgeAbstractCommand
      */
     public function handle()
     {
+        /** @var string $siteName */
         $siteName = $this->argument('site_name');
+        /** @var string $gitBranch */
         $gitBranch = $this->argument('git_branch');
-        $siteId = (int) $this->option('site');
+        /** @var string $siteId */
+        $siteId = $this->option('site');
 
         if (! $this->checkGitBranch($gitBranch)) {
             return 0;
         }
 
-        $site = $this->getSite($siteName, $siteId);
+        $site = $this->getSite($siteName, (int) $siteId);
         if (! $site) {
             return 0;
         }

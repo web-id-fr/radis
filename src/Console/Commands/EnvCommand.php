@@ -25,11 +25,14 @@ class EnvCommand extends ForgeAbstractCommand
      */
     public function handle()
     {
+        /** @var string $siteName */
         $siteName = $this->argument('site_name');
+        /** @var string $databaseName */
         $databaseName = $this->option('database');
-        $siteId = (int) $this->option('site');
+        /** @var string $siteId */
+        $siteId = $this->option('site');
 
-        $site = $this->getSite($siteName, $siteId);
+        $site = $this->getSite($siteName, (int) $siteId);
         if (! $site) {
             return 0;
         }

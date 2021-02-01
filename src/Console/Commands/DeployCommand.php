@@ -19,11 +19,12 @@ class DeployCommand extends ForgeAbstractCommand
      */
     public function handle()
     {
+        /** @var string $siteName */
         $siteName = $this->argument('site_name');
+        /** @var string $siteId */
+        $siteId = $this->option('site');
 
-        $siteId = (int) $this->option('site');
-
-        $site = $this->getSite($siteName, $siteId);
+        $site = $this->getSite($siteName, (int) $siteId);
         if (! $site) {
             return 0;
         }

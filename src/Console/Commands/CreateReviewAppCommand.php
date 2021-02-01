@@ -30,11 +30,15 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
     {
         $this->checkConfig('radis.git_repository');
 
+        /** @var string $siteName */
         $siteName = $this->argument('site_name');
+        /** @var string $gitBranch */
         $gitBranch = $this->argument('git_branch');
-        if (! $this->checkGitBranch($gitBranch)) {
+
+        if (!$this->checkGitBranch($gitBranch)) {
             return 0;
         }
+        /** @var string|null $databaseName */
         $databaseName = $this->option('database');
 
         $featureDomain = ForgeFormatter::getFeatureDomain($siteName);
@@ -70,7 +74,7 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
      * @param string $siteName
      * @param string|null $databaseName
      */
-    private function destroyExisting(string $siteName, string $databaseName = null)
+    private function destroyExisting(string $siteName, string $databaseName = null): void
     {
         $commandDestroy = [
             'site_name' => $siteName,
@@ -85,7 +89,7 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
      * @param string $siteName
      * @throws \Exception
      */
-    private function waitingDestroy(string $siteName)
+    private function waitingDestroy(string $siteName): void
     {
         for ($i = 1; $i <= 10; $i++) {
             if ($this->getSite($siteName) === null) {
