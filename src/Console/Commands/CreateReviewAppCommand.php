@@ -35,7 +35,7 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
         /** @var string $gitBranch */
         $gitBranch = $this->argument('git_branch');
 
-        if (!$this->checkGitBranch($gitBranch)) {
+        if (! $this->checkGitBranch($gitBranch)) {
             return 0;
         }
         /** @var string|null $databaseName */
