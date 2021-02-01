@@ -1,6 +1,6 @@
 <?php
 
-namespace WebId\Radis\Tests\Unit;
+namespace WebId\Radis\Tests\Unit\Classes;
 
 use WebId\Radis\Classes\ForgeFormatter;
 use WebId\Radis\Tests\TestCase;
