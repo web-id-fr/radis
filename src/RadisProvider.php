@@ -4,7 +4,7 @@ namespace WebId\Radis;
 
 use Illuminate\Support\ServiceProvider;
 use WebId\Radis\Console\Commands\CreateReviewAppCommand;
-use WebId\Radis\Console\Commands\DeployCommand;
+use WebId\Radis\Console\Commands\UpdateCommand;
 use WebId\Radis\Console\Commands\DeployScriptCommand;
 use WebId\Radis\Console\Commands\DestroyCommand;
 use WebId\Radis\Console\Commands\EnvCommand;
@@ -44,7 +44,7 @@ class RadisProvider extends ServiceProvider
                 DestroyCommand::class,
                 EnvCommand::class,
                 DeployScriptCommand::class,
-                DeployCommand::class,
+                UpdateCommand::class,
             ]);
         }
     }

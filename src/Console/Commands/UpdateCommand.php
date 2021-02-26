@@ -2,7 +2,7 @@
 
 namespace WebId\Radis\Console\Commands;
 
-class DeployCommand extends ForgeAbstractCommand
+class UpdateCommand extends ForgeAbstractCommand
 {
     /** @var string */
     protected $signature = 'radis:update
