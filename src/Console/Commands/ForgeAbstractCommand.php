@@ -38,20 +38,38 @@ abstract class ForgeAbstractCommand extends Command
      * @param int|null $siteId
      * @return Site|null
      */
-    protected function getSite(string $siteName, int $siteId = null): ?Site
+    protected function getSite(string $siteName, ?int $siteId): ?Site
     {
-        if (is_int($siteId)) {
-            try {
-                return $this->forgeService->getSiteById($this->forgeServer, $siteId);
-            } catch (\Exception $e) {
-                report($e);
-                $this->error('No site found with this ID : ' . $siteId);
-                if (! $this->confirm('Would you like to try site name instead site ID ?')) {
-                    return null;
-                }
-            }
+        if (!empty($siteId) && is_int($siteId)) {
+            return $this->getSiteById($siteId);
         }
 
+        return $this->getSiteByName($siteName);
+    }
+
+    /**
+     * @param int $siteId
+     * @return Site|null
+     */
+    protected function getSiteByid(int $siteId): ?Site
+    {
+        try {
+            return $this->forgeService->getSiteById($this->forgeServer, $siteId);
+        } catch (\Exception $e) {
+            report($e);
+            $this->error('No site found with this ID : ' . $siteId);
+            if (! $this->confirm('Would you like to try site name instead site ID ?')) {
+                return null;
+            }
+        }
+    }
+
+    /**
+     * @param string $siteName
+     * @return Site|null
+     */
+    protected function getSiteByName(string $siteName): ?Site
+    {
         try {
             return $this->forgeService->getSiteBySiteName($this->forgeServer, $siteName);
         } catch (\Exception $e) {
