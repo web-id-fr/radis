@@ -4,10 +4,10 @@ namespace WebId\Radis;
 
 use Illuminate\Support\ServiceProvider;
 use WebId\Radis\Console\Commands\CreateReviewAppCommand;
-use WebId\Radis\Console\Commands\UpdateCommand;
 use WebId\Radis\Console\Commands\DeployScriptCommand;
 use WebId\Radis\Console\Commands\DestroyCommand;
 use WebId\Radis\Console\Commands\EnvCommand;
+use WebId\Radis\Console\Commands\UpdateCommand;
 use WebId\Radis\Services\ForgeService;
 use WebId\Radis\Services\ForgeServiceContract;
 use WebId\Radis\Services\ForgeServiceTesting;

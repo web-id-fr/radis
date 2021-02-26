@@ -40,7 +40,7 @@ abstract class ForgeAbstractCommand extends Command
      */
     protected function getSite(string $siteName, ?int $siteId): ?Site
     {
-        if (!empty($siteId) && is_int($siteId)) {
+        if (! empty($siteId) && is_int($siteId)) {
             return $this->getSiteById($siteId);
         }
 
