@@ -37,12 +37,4 @@ class UpdateCommand extends ForgeAbstractCommand
 
         return 0;
     }
-
-    /**
-     * @return int
-     */
-    protected function getCountTask(): int
-    {
-        return 0;
-    }
 }
