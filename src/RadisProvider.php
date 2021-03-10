@@ -37,25 +37,6 @@ class RadisProvider extends ServiceProvider
      */
     public function boot()
     {
-        if ($this->app->runningInConsole()) {
-            $this->bootForConsole();
-            $this->commands([
-                CreateReviewAppCommand::class,
-                DestroyCommand::class,
-                EnvCommand::class,
-                DeployScriptCommand::class,
-                UpdateCommand::class,
-            ]);
-        }
-    }
-
-    /**
-     * Console-specific booting.
-     *
-     * @return void
-     */
-    protected function bootForConsole()
-    {
         // Publishing the configuration file.
         $this->publishes([
             __DIR__.'/../config/radis.php' => config_path('radis.php'),
@@ -66,5 +47,25 @@ class RadisProvider extends ServiceProvider
             __DIR__.'/Stubs/env.stub' => base_path('stubs/env.stub'),
             __DIR__.'/Stubs/deployScript.stub' => base_path('stubs/deployScript.stub'),
         ], 'stub');
+
+        if ($this->app->runningInConsole()) {
+            $this->bootForConsole();
+        }
+    }
+
+    /**
+     * Console-specific booting.
+     *
+     * @return void
+     */
+    protected function bootForConsole()
+    {
+        $this->commands([
+            CreateReviewAppCommand::class,
+            DestroyCommand::class,
+            EnvCommand::class,
+            DeployScriptCommand::class,
+            UpdateCommand::class,
+        ]);
     }
 }
