@@ -1,12 +1,21 @@
 {
-    "name": "webid/radis",
+    "name": "web-id/radis",
     "description": "Radis - Rewiew Apps Deployed In Seconds",
+    "keywords": [
+        "forge",
+        "laravel-package",
+        "forge-review"
+    ],
     "type": "project",
     "license": "MIT",
     "authors": [
         {
             "name": "Gabriel Pillet",
             "email": "gabriel@web-id.fr"
+        },
+        {
+            "name": "Léo Tiollier",
+            "email": "leo@web-id.fr"
         }
     ],
     "autoload": {
@@ -14,6 +23,35 @@
             "WebId\\Radis\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "WebId\\Radis\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "WebId\\Radis\\RadisProvider"
+            ]
+        }
+    },
     "minimum-stability": "dev",
-    "require": {}
+    "require": {
+        "php": "^7.4|^8.0",
+        "laravel/forge-sdk": "^4.0@dev"
+    },
+    "require-dev": {
+        "nunomaduro/larastan": "^0.6.13",
+        "orchestra/testbench": "^6.0",
+        "phpstan/phpstan": "^0.12.70",
+        "phpunit/phpunit": "^9.3"
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit --colors=always",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "prefer-stable": true
 }
