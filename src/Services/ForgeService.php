@@ -16,7 +16,7 @@ class ForgeService implements ForgeServiceContract
 
     public function __construct()
     {
-        $this->forge = new Forge(config('radis.forge.token'));
+        $this->forge = new Forge(config('radis.forge.token', ''));
     }
 
     /**
