@@ -5,7 +5,7 @@
 Require this package with composer. It is recommended to only require the package for development.
 
 ```shell
-composer require web-id-fr/radis --dev
+composer require webid/radis --dev
 ```
 Laravel uses Package Auto-Discovery, so doesn't require you to manually add the ServiceProvider.
 
