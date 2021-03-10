@@ -32,6 +32,9 @@
         "laravel": {
             "providers": [
                 "WebId\\Radis\\RadisProvider"
+            ],
+            "dont-discover": [
+                "*"
             ]
         }
     },
