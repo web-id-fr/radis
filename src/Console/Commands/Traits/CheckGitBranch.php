@@ -2,6 +2,8 @@
 
 namespace WebId\Radis\Console\Commands\Traits;
 
+use Illuminate\Support\Facades\Config;
+
 trait CheckGitBranch
 {
     /**
@@ -10,7 +12,7 @@ trait CheckGitBranch
      */
     protected function checkGitBranch(string $gitBranch): bool
     {
-        $repo = config('radis.git_repository');
+        $repo = Config::get('radis.git_repository');
         $gitBranchExist = (bool) intval(exec("git ls-remote --heads git@github.com:$repo.git $gitBranch | wc -l "));
 
         if (! $gitBranchExist) {

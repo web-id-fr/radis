@@ -2,6 +2,8 @@
 
 namespace WebId\Radis\Console\Commands\Traits;
 
+use Illuminate\Support\Facades\Config;
+
 trait CheckConfig
 {
     /**
@@ -9,7 +11,7 @@ trait CheckConfig
      */
     protected function checkConfig(string $key): void
     {
-        if (empty(config($key))) {
+        if (empty(Config::get($key))) {
             throw new \RuntimeException(sprintf(
                 'Config key "%s" was not found.',
                 $key

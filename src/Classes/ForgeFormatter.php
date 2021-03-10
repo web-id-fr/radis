@@ -2,6 +2,8 @@
 
 namespace WebId\Radis\Classes;
 
+use Illuminate\Support\Facades\Config;
+
 class ForgeFormatter
 {
     /**
@@ -30,7 +32,7 @@ class ForgeFormatter
      */
     public static function getFeatureDomain(string $siteName): string
     {
-        return $siteName . '-feature.' . config('radis.forge.server_domain');
+        return $siteName . '-feature.' . Config::get('radis.forge.server_domain');
     }
 
     /**
@@ -38,6 +40,6 @@ class ForgeFormatter
      */
     public static function getFeatureDatabasePassword(): string
     {
-        return config('radis.forge.database_password');
+        return Config::get('radis.forge.database_password');
     }
 }

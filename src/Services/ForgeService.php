@@ -2,6 +2,7 @@
 
 namespace WebId\Radis\Services;
 
+use Illuminate\Support\Facades\Config;
 use Laravel\Forge\Forge;
 use Laravel\Forge\Resources\Database;
 use Laravel\Forge\Resources\DatabaseUser;
@@ -16,7 +17,7 @@ class ForgeService implements ForgeServiceContract
 
     public function __construct()
     {
-        $this->forge = new Forge(config('radis.forge.token', ''));
+        $this->forge = new Forge(Config::get('radis.forge.token', ''));
     }
 
     /**
@@ -24,7 +25,7 @@ class ForgeService implements ForgeServiceContract
      */
     public function getForgeServer(): Server
     {
-        $forgeServerName = config('radis.forge.server_name');
+        $forgeServerName = Config::get('radis.forge.server_name');
 
         foreach ($this->forge->servers() as $server) {
             if ($server->name === $forgeServerName) {
@@ -134,19 +135,19 @@ class ForgeService implements ForgeServiceContract
 
         $site->installGitRepository([
             "provider" => "github",
-            "repository" => config('radis.git_repository'),
+            "repository" => Config::get('radis.git_repository'),
             "branch" => $gitBranch,
             "composer" => false,
         ]);
 
         $site->enableQuickDeploy();
 
-        if (config('radis.forge.lets_encrypt_type') && config('radis.forge.lets_encrypt_api_key')) {
+        if (Config::get('radis.forge.lets_encrypt_type') && Config::get('radis.forge.lets_encrypt_api_key')) {
             $this->forge->obtainLetsEncryptCertificate($forgeServer->id, $site->id, [
                 "domains" => [$featureDomain],
                 "dns_provider" => [
-                    "type" => config('radis.forge.lets_encrypt_type'),
-                    "digitalocean_token" => config('radis.forge.lets_encrypt_api_key'),
+                    "type" => Config::get('radis.forge.lets_encrypt_type'),
+                    "digitalocean_token" => Config::get('radis.forge.lets_encrypt_api_key'),
                 ],
             ]);
         }

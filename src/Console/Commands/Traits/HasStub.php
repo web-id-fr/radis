@@ -4,6 +4,7 @@ namespace WebId\Radis\Console\Commands\Traits;
 
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Config;
 
 trait HasStub
 {
@@ -118,7 +119,7 @@ trait HasStub
     protected function generateRandomKey()
     {
         return 'base64:'.base64_encode(
-            Encrypter::generateKey(config('app.cipher'))
+            Encrypter::generateKey(Config::get('app.cipher'))
         );
     }
 }

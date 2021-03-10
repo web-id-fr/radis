@@ -2,6 +2,7 @@
 
 namespace WebId\Radis;
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use WebId\Radis\Console\Commands\CreateReviewAppCommand;
 use WebId\Radis\Console\Commands\DeployScriptCommand;
@@ -21,7 +22,7 @@ class RadisProvider extends ServiceProvider
      */
     public function register()
     {
-        if (config('radis.driver') === 'fake') {
+        if (Config::get('radis.driver') === 'fake') {
             $this->app->bind(ForgeServiceContract::class, ForgeServiceTesting::class);
         } else {
             $this->app->bind(ForgeServiceContract::class, ForgeService::class);
