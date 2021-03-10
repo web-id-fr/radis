@@ -25,6 +25,8 @@ class EnvCommand extends ForgeAbstractCommand
      */
     public function handle()
     {
+        parent::handle();
+
         /** @var string $siteName */
         $siteName = $this->argument('site_name');
         /** @var string $databaseName */

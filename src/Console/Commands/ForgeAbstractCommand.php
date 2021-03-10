@@ -6,31 +6,27 @@ use Illuminate\Console\Command;
 use Laravel\Forge\Resources\Server;
 use Laravel\Forge\Resources\Site;
 use WebId\Radis\Console\Commands\Traits\CheckConfig;
-use WebId\Radis\Services\ForgeService;
+use WebId\Radis\Services\ForgeServiceContract;
 
 abstract class ForgeAbstractCommand extends Command
 {
     use CheckConfig;
 
-    /** @var ForgeService */
+    /** @var ForgeServiceContract */
     protected $forgeService;
 
     /** @var Server */
     protected $forgeServer;
 
-    /**
-     * @param ForgeService $forgeService
-     */
-    public function __construct(ForgeService $forgeService)
+    public function handle()
     {
-        parent::__construct();
-
-        $this->forgeService = $forgeService;
-        $this->forgeServer = $this->forgeService->getForgeServer();
-
         $this->checkConfig('radis.forge.token');
         $this->checkConfig('radis.forge.server_name');
         $this->checkConfig('radis.forge.server_domain');
+
+        /** @var ForgeServiceContract forgeService */
+        $this->forgeService = app(ForgeServiceContract::class);
+        $this->forgeServer = $this->forgeService->getForgeServer();
     }
 
     /**

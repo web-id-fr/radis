@@ -28,6 +28,8 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
      */
     public function handle()
     {
+        parent::handle();
+
         $this->checkConfig('radis.git_repository');
 
         /** @var string $siteName */
