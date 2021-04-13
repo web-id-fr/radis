@@ -27,10 +27,18 @@ return [
         'server_domain' => env('FORGE_SERVER_DOMAIN'),
         'database_name' => env('FORGE_DATABASE_NAME'),
         'database_password' => env('FORGE_DATABASE_PASSWORD', 'root'),
-        'digital_ocean_api_key' => env('DIGITAL_OCEAN_API_KEY'),
+        'lets_encrypt_type' => env('LETS_ENCRYPT_TYPE'),
+        'lets_encrypt_api_key' => env('LETS_ENCRYPT_API_KEY'),
     ],
     'git_repository' => env('GIT_REPOSITORY')
 ];
+```
+
+`lets_encrypt_type` and `lets_encrypt_api_key` are not required, but it's needed for auto HTTPS.
+For digitalocean example (https://docs.digitalocean.com/reference/api/create-personal-access-token/): 
+```
+LETS_ENCRYPT_TYPE=digitalocean
+LETS_ENCRYPT_API_KEY=EXEMPLE98edb566f9917d797fba2c0b05e2f2064ad7771422740181561322961
 ```
 
 ### 2/ Stub Env
