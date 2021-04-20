@@ -4,7 +4,8 @@ namespace WebId\Radis\Classes;
 
 use Laravel\Forge\Resources\Site as SiteOriginal;
 
-class Site extends SiteOriginal {
+class Site extends SiteOriginal
+{
     /**
      * Change the site's PHP version
      *

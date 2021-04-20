@@ -4,7 +4,8 @@ namespace WebId\Radis\Classes;
 
 use Laravel\Forge\Actions\ManagesSites as ManagesSitesOriginal;
 
-trait ManagesSites {
+trait ManagesSites
+{
     use ManagesSitesOriginal;
 
     /**
@@ -32,7 +33,8 @@ trait ManagesSites {
     public function site($serverId, $siteId)
     {
         return new Site(
-            $this->get("servers/$serverId/sites/$siteId")['site'] + ['server_id' => $serverId], $this
+            $this->get("servers/$serverId/sites/$siteId")['site'] + ['server_id' => $serverId],
+            $this
         );
     }
 
@@ -71,7 +73,8 @@ trait ManagesSites {
     {
         return new Site(
             $this->put("servers/$serverId/sites/$siteId", $data)['site']
-            + ['server_id' => $serverId], $this
+            + ['server_id' => $serverId],
+            $this
         );
     }
 
@@ -87,7 +90,8 @@ trait ManagesSites {
     {
         return new Site(
             $this->put("servers/$serverId/sites/$siteId/aliases", compact('aliases'))['site']
-            + ['server_id' => $serverId], $this
+            + ['server_id' => $serverId],
+            $this
         );
     }
 
