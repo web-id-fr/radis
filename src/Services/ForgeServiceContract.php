@@ -3,7 +3,7 @@
 namespace WebId\Radis\Services;
 
 use Laravel\Forge\Resources\Server;
-use Laravel\Forge\Resources\Site;
+use WebId\Radis\Classes\Site;
 
 interface ForgeServiceContract
 {
