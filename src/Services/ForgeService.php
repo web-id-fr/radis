@@ -3,12 +3,12 @@
 namespace WebId\Radis\Services;
 
 use Illuminate\Support\Facades\Config;
-use Laravel\Forge\Forge;
+use WebId\Radis\Classes\Forge;
+use WebId\Radis\Classes\Site;
+use WebId\Radis\Classes\ForgeFormatter;
 use Laravel\Forge\Resources\Database;
 use Laravel\Forge\Resources\DatabaseUser;
 use Laravel\Forge\Resources\Server;
-use Laravel\Forge\Resources\Site;
-use WebId\Radis\Classes\ForgeFormatter;
 
 class ForgeService implements ForgeServiceContract
 {
@@ -132,6 +132,8 @@ class ForgeService implements ForgeServiceContract
             "password" => $featureDatabasePassword,
             "databases" => [$database->id],
         ], $wait = true);
+
+        $site->changePHPVersion(config('radis.forge.server_php_version'));
 
         $site->installGitRepository([
             "provider" => "github",
