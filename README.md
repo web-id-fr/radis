@@ -7,73 +7,101 @@ Require this package with composer. It is recommended to only require the packag
 ```shell
 composer require webid/radis --dev
 ```
+
 Laravel uses Package Auto-Discovery, so doesn't require you to manually add the ServiceProvider.
 
-Copy the package config to your local config and stubs with the publish command:
+Publish the package configuration and stubs with the publish command:
+
 ```shell
 php artisan vendor:publish --provider="WebId\Radis\RadisProvider"
 ```
 
 ## Configurations
 
-### 1/ Config
+### 1. Configuration
+
 You need to start by configuring your environment variables to access forge in ``config/radis.php``
 
+First of all, create a new token here: [https://forge.laravel.com/user/profile#/api]() and paste the generated copy in
+the ``.env`` file:
+
+```.dotenv
+RADIS_TOKEN="my-brand-new-forge-token"
 ```
+
+```php
 return [
     'forge' => [
-        'token' => env('RADIS_TOKEN'), //https://forge.laravel.com/user/profile#/api
-        'server_name' => env('RADIS_SERVER_NAME'), //example: link
-        'server_domain' => env('RADIS_SERVER_DOMAIN'), //example: link.hyrule.org
-        'site_php_version' => env('RADIS_SITE_VERSION', 'php80'), //examples: 'php80' or 'php74'
+        'token' => env('RADIS_TOKEN'),
+        'server_name' => env('RADIS_SERVER_NAME'),
+        'server_domain' => env('RADIS_SERVER_DOMAIN'),
+        'site_php_version' => env('RADIS_SITE_VERSION', 'php80'),
         'database_password' => env('RADIS_DATABASE_PASSWORD', 'root'),
         'lets_encrypt_type' => env('RADIS_LETS_ENCRYPT_TYPE'),
-        'lets_encrypt_api_key' => env('RADIS_ENCRYPT_API_KEY'),
+        'lets_encrypt_api_key' => env('RADIS_LETS_ENCRYPT_API_KEY'),
     ],
+    
     'git_repository' => env('RADIS_GIT_REPOSITORY')
 ];
 ```
 
-`lets_encrypt_type` and `lets_encrypt_api_key` are not required, but it's needed for auto HTTPS.
-For digitalocean example (https://docs.digitalocean.com/reference/api/create-personal-access-token/): 
-```
+`lets_encrypt_type` and `lets_encrypt_api_key` are not required, but it's needed for auto HTTPS. For digitalocean
+example (https://docs.digitalocean.com/reference/api/create-personal-access-token/):
+
+```dotenv
 RADIS_LETS_ENCRYPT_TYPE=digitalocean
-RADIS_ENCRYPT_API_KEY=EXEMPLE98edb566f9917d797fba2c0b05e2f2064ad7771422740181561322961
+RADIS_LETS_ENCRYPT_API_KEY=EXEMPLE98edb566f9917d797fba2c0b05e2f2064ad7771422740181561322961
 ```
 
-### 2/ Stub Env
-After that, you need to adapt the desired .env file for your review app by modifying the stub ``stubs/env.stub``
-Variables starting with ``STUB_`` are automatically replaced according to your configuration, or the parameters given to artisan commands.
+### 2. ``.env`` stub
 
-### 3/ Stub Deploy script
+After that, you need to adapt the desired .env file for your review app by modifying the stub ``stubs/env.stub``
+
+Don't change the constants starting with ``STUB_``, they will be automatically replaced according to your configuration,
+or the parameters given to artisan commands.
+
+### 3. Deploy script stub
 
 Finally, you need to adapt the forge deployment script according to your project in the stub ``stubs/deployScript.stub``
 
 ## Usage
 
-You can now deploy a review app juste with :
+### Create a review app
 
-```
+> ⚠️ If a review app already exists with this name, it will be destroyed and recreated
+
+```shell
 php artisan radis:create mySiteName myGitBranch
 php artisan radis:create mySiteName myGitBranch customDatabaseName
 ```
 
-Or update an existing review app (just launch the deploy script) :
-```
+### Update an existing review app
+
+This will only launch the deploy script
+
+```shell
 php artisan radis:update mySiteName
 ```
-And destroy an review app
 
-!!! WARNING !!! This will remove database and user database associated
-```
+### Destroy a review app
+
+> ⚠️ This will remove both database and associated user database
+
+```shell
 php artisan radis:destroy mySiteName
 ```
-You can also only update the .env
-```
+
+### Update the ``.env`` file
+
+```shell
 php artisan radis:env mySiteName
 php artisan radis:env mySiteName customDatabaseName
 ```
-Or the deploy script (without launching it)
-```
+
+### Update the deploy script
+
+> ℹ️ It updates the script without running it
+
+```shell
 php artisan radis:deploy-script mySiteName myGitBranch
 ```
