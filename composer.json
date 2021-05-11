@@ -16,6 +16,10 @@
         {
             "name": "Léo Tiollier",
             "email": "leo@web-id.fr"
+        },
+        {
+            "name": "Wilfried Jourdil",
+            "email": "wilfried@web-id.fr"
         }
     ],
     "autoload": {
