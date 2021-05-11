@@ -3,17 +3,16 @@
 namespace WebId\Radis\Services;
 
 use Illuminate\Support\Facades\Config;
+use Laravel\Forge\Forge;
 use Laravel\Forge\Resources\Database;
 use Laravel\Forge\Resources\DatabaseUser;
 use Laravel\Forge\Resources\Server;
-use WebId\Radis\Classes\Forge;
+use Laravel\Forge\Resources\Site;
 use WebId\Radis\Classes\ForgeFormatter;
-use WebId\Radis\Classes\Site;
 
 class ForgeService implements ForgeServiceContract
 {
-    /** @var Forge */
-    private $forge;
+    private Forge $forge;
 
     public function __construct()
     {
