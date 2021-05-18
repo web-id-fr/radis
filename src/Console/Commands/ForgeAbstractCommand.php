@@ -12,21 +12,20 @@ abstract class ForgeAbstractCommand extends Command
 {
     use CheckConfig;
 
-    /** @var ForgeServiceContract */
-    protected $forgeService;
+    protected ForgeServiceContract $forgeService;
 
-    /** @var Server */
-    protected $forgeServer;
+    protected Server $forgeServer;
 
-    public function handle()
+    public function handle(): int
     {
         $this->checkConfig('radis.forge.token');
         $this->checkConfig('radis.forge.server_name');
         $this->checkConfig('radis.forge.server_domain');
 
-        /** @var ForgeServiceContract forgeService */
         $this->forgeService = app(ForgeServiceContract::class);
         $this->forgeServer = $this->forgeService->getForgeServer();
+
+        return 0;
     }
 
     /**
@@ -37,7 +36,11 @@ abstract class ForgeAbstractCommand extends Command
     protected function getSite(string $siteName, ?int $siteId): ?Site
     {
         if (! empty($siteId) && is_int($siteId)) {
-            return $this->getSiteById($siteId);
+            $site = $this->getSiteById($siteId);
+
+            if (is_null($site) && ! $this->confirm('Would you like to try site name instead site ID ?')) {
+                return null;
+            }
         }
 
         return $this->getSiteByName($siteName);
@@ -54,9 +57,8 @@ abstract class ForgeAbstractCommand extends Command
         } catch (\Exception $e) {
             report($e);
             $this->error('No site found with this ID : ' . $siteId);
-            if (! $this->confirm('Would you like to try site name instead site ID ?')) {
-                return null;
-            }
+        } finally {
+            return null;
         }
     }
 

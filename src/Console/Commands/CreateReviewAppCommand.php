@@ -31,7 +31,7 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
      * @return int
      * @throws \Exception
      */
-    public function handle()
+    public function handle(): int
     {
         parent::handle();
 

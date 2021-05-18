@@ -23,7 +23,7 @@ class EnvCommand extends ForgeAbstractCommand
      *
      * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         parent::handle();
 
