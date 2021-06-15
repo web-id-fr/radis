@@ -22,7 +22,7 @@ php artisan vendor:publish --provider="WebId\Radis\RadisProvider"
 
 You need to start by configuring your environment variables to access forge in ``config/radis.php``
 
-First of all, create a new token here: [https://forge.laravel.com/user/profile#/api]() and paste the generated copy in
+First of all, create a new token here: https://forge.laravel.com/user/profile#/api and paste the generated copy in
 the ``.env`` file:
 
 ```.dotenv
