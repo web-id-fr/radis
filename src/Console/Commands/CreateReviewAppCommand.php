@@ -54,6 +54,7 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
 
         $featureDomain = ForgeFormatter::getFeatureDomain($siteName);
 
+        dd('non.');
         $this->destroyExisting($siteName, $databaseName);
         $this->waitingDestroy($siteName);
 
