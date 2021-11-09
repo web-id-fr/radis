@@ -3,17 +3,14 @@
 namespace WebId\Radis\Console\Commands;
 
 use WebId\Radis\Classes\ForgeFormatter;
-use WebId\Radis\Console\Commands\Traits\CheckGitBranch;
 use WebId\Radis\Console\Commands\Traits\CheckSiteName;
 use WebId\Radis\Console\Commands\Traits\HasStub;
 
 class CreateReviewAppCommand extends ForgeAbstractCommand
 {
     use HasStub;
-    use CheckGitBranch;
     use CheckSiteName;
 
-    const ERROR_INVALID_GIT_BRANCH = 1;
     const ERROR_INVALID_SITE_NAME = 2;
 
     /** @var string */
@@ -42,9 +39,6 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
         /** @var string $gitBranch */
         $gitBranch = $this->argument('git_branch');
 
-        if (! $this->checkGitBranch($gitBranch)) {
-            return self::ERROR_INVALID_GIT_BRANCH;
-        }
         if (! $this->checkSiteName($siteName)) {
             return self::ERROR_INVALID_SITE_NAME;
         }
