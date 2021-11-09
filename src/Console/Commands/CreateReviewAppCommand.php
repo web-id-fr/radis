@@ -61,16 +61,14 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
         $site = $this->forgeService->createForgeSite($this->forgeServer, $siteName, $gitBranch, $databaseName);
 
         $this->comment('Updating site env...');
-        $this->callSilent('radis:env', [
+        $this->call('radis:env', [
             'site_name' => $siteName,
-            '--site' => $site->id,
         ]);
 
         $this->comment('Updating site script deploy...');
-        $this->callSilent('radis:deploy-script', [
+        $this->call('radis:deploy-script', [
             'site_name' => $siteName,
             'git_branch' => $gitBranch,
-            '--site' => $site->id,
         ]);
 
         $this->comment('Deploying site...');
@@ -87,13 +85,15 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
      */
     private function destroyExisting(string $siteName, string $databaseName = null): void
     {
-        $commandDestroy = [
+        $commandArguments = [
             'site_name' => $siteName,
         ];
+
         if ($databaseName) {
-            $commandDestroy['--database'] = $databaseName;
+            $commandArguments['--database'] = $databaseName;
         }
-        $this->call('radis:destroy', $commandDestroy);
+
+        $this->call('radis:destroy', $commandArguments);
     }
 
     /**
