@@ -28,7 +28,7 @@ class ForgeFormatterTest extends TestCase
     /** @test */
     public function it_will_format_domain()
     {
-        $this->assertEquals('fake-feature.fake.ninja', ForgeFormatter::getFeatureDomain('fake'));
+        $this->assertEquals('fake.fake.ninja', ForgeFormatter::getFeatureDomain('fake'));
     }
 
     /** @test */
