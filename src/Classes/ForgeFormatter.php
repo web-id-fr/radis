@@ -32,7 +32,7 @@ class ForgeFormatter
      */
     public static function getFeatureDomain(string $siteName): string
     {
-        return $siteName . '-feature.' . Config::get('radis.forge.server_domain');
+        return $siteName . '.' . Config::get('radis.forge.server_domain');
     }
 
     /**
