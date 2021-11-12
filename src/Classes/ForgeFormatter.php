@@ -32,7 +32,12 @@ class ForgeFormatter
      */
     public static function getFeatureDomain(string $siteName): string
     {
-        return $siteName . '.' . Config::get('radis.forge.server_domain');
+        $domain = $siteName . '.' . Config::get('radis.forge.server_domain');
+
+        // Removing unallowed characters in domain name
+        $domain = str_replace('_', '-', $domain);
+
+        return $domain;
     }
 
     /**
