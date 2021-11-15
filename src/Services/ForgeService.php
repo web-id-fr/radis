@@ -143,15 +143,9 @@ class ForgeService implements ForgeServiceContract
 
         $site->enableQuickDeploy();
 
-        if (Config::get('radis.forge.lets_encrypt_type') && Config::get('radis.forge.lets_encrypt_api_key')) {
-            $this->forge->obtainLetsEncryptCertificate($forgeServer->id, $site->id, [
-                "domains" => [$featureDomain],
-                "dns_provider" => [
-                    "type" => Config::get('radis.forge.lets_encrypt_type'),
-                    "digitalocean_token" => Config::get('radis.forge.lets_encrypt_api_key'),
-                ],
-            ]);
-        }
+        $this->forge->obtainLetsEncryptCertificate($forgeServer->id, $site->id, [
+            "domains" => [$featureDomain],
+        ]);
 
         return $site;
     }
