@@ -32,7 +32,7 @@ class DestroyCommand extends ForgeAbstractCommand
 
         if ($this->forgeService->deleteForgeSiteIfExists($this->forgeServer, $siteName)) {
             $featureDomain = ForgeFormatter::getFeatureDomain($siteName);
-            $this->comment('Deleting forge site : "'.$featureDomain.'"...');
+            $this->comment('Deleting forge site : https://'.$featureDomain.' ...');
             $hasDestroy = true;
         }
 

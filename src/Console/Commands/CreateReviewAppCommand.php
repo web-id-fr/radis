@@ -51,7 +51,7 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
         $this->destroyExisting($siteName, $databaseName);
         $this->waitingDestroy($siteName);
 
-        $this->comment('Creating forge site : "'.$featureDomain.'"...');
+        $this->comment('Creating forge site : https://'.$featureDomain.' ...');
         $site = $this->forgeService->createForgeSite($this->forgeServer, $siteName, $gitBranch, $databaseName);
 
         $this->comment('Updating site env...');
@@ -65,10 +65,12 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
             'git_branch' => $gitBranch,
         ]);
 
-        $this->comment('Deploying site...');
-        $site->deploySite(false);
+        $this->comment('Waiting for site to be deployed...');
+        $wait = true;
+        $site->deploySite($wait);
 
-        $this->info("The review app `${siteName}` will be created with the branch `${gitBranch}`");
+        $this->info("The review app `${siteName}` has been created on branch `${gitBranch}`");
+        $this->info("Access it with https://${featureDomain}");
 
         return 0;
     }
