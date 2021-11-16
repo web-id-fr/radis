@@ -33,9 +33,10 @@ class UpdateCommand extends ForgeAbstractCommand
 
         $this->comment("Send `${siteName}` deploying request ..");
 
-        $site->deploySite(false);
+        // Waiting for site to be deployed
+        $site->deploySite(true);
 
-        $this->info("The review app `${siteName}` will be deployed");
+        $this->info("The review app `${siteName}` has been updated");
 
         return 0;
     }
