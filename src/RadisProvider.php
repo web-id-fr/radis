@@ -4,6 +4,7 @@ namespace WebId\Radis;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
+use WebId\Radis\Console\Commands\CreateOrUpdateCommand;
 use WebId\Radis\Console\Commands\CreateReviewAppCommand;
 use WebId\Radis\Console\Commands\DeployScriptCommand;
 use WebId\Radis\Console\Commands\DestroyCommand;
@@ -62,6 +63,7 @@ class RadisProvider extends ServiceProvider
     protected function bootForConsole()
     {
         $this->commands([
+            CreateOrUpdateCommand::class,
             CreateReviewAppCommand::class,
             DestroyCommand::class,
             EnvCommand::class,
