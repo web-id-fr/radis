@@ -5,6 +5,7 @@ namespace WebId\Radis\Console\Commands;
 use WebId\Radis\Classes\ForgeFormatter;
 use WebId\Radis\Console\Commands\Traits\CheckSiteName;
 use WebId\Radis\Console\Commands\Traits\HasStub;
+use WebId\Radis\Services\Exceptions\CouldNotObtainLetEncryptCertificateException;
 
 class CreateReviewAppCommand extends ForgeAbstractCommand
 {
@@ -46,13 +47,25 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
         /** @var string|null $databaseName */
         $databaseName = $this->option('database');
 
+        $scheme = 'https';
         $featureDomain = ForgeFormatter::getFeatureDomain($siteName);
 
         $this->destroyExisting($siteName, $databaseName);
         $this->waitingDestroy($siteName);
 
-        $this->comment('Creating forge site : https://'.$featureDomain.' ...');
+        $this->comment('Creating forge site : '.$featureDomain.' ...');
+
         $site = $this->forgeService->createForgeSite($this->forgeServer, $siteName, $gitBranch, $databaseName);
+        try {
+            $this->forgeService->createLetEncryptCertificate($this->forgeServer, $siteName, $site);
+        } catch (CouldNotObtainLetEncryptCertificateException $e) {
+            $scheme = 'http';
+            $this->error(
+                "Could not obtain let's encrypt certificate.\n" .
+                "It can be because let's encrypt rate limit has been hit.\n" .
+                $e->getMessage()
+            );
+        }
 
         $this->comment('Updating site env...');
         $this->call('radis:env', [
@@ -70,7 +83,7 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
         $site->deploySite($wait);
 
         $this->info("The review app `${siteName}` has been created on branch `${gitBranch}`");
-        $this->info("Access it with https://${featureDomain}");
+        $this->info("Access it with ${scheme}://${featureDomain}");
 
         return 0;
     }

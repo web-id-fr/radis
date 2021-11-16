@@ -9,6 +9,7 @@ use Laravel\Forge\Resources\DatabaseUser;
 use Laravel\Forge\Resources\Server;
 use Laravel\Forge\Resources\Site;
 use WebId\Radis\Classes\ForgeFormatter;
+use WebId\Radis\Services\Exceptions\CouldNotObtainLetEncryptCertificateException;
 
 class ForgeService implements ForgeServiceContract
 {
@@ -144,11 +145,29 @@ class ForgeService implements ForgeServiceContract
 
         $site->enableQuickDeploy();
 
-        $this->forge->obtainLetsEncryptCertificate($forgeServer->id, $site->id, [
-            "domains" => [$featureDomain],
-        ]);
-
         return $site;
+    }
+
+    /**
+     * @param Server $forgeServer
+     * @param string $siteName
+     * @param Site $site
+     */
+    public function createLetEncryptCertificate(Server $forgeServer, $siteName, Site $site): void
+    {
+        $featureDomain = ForgeFormatter::getFeatureDomain($siteName);
+        $certificates = $this->forge->certificates($forgeServer->id, $site->id);
+        if (empty($certificates)) {  
+            try {
+                $this->forge->obtainLetsEncryptCertificate($forgeServer->id, $site->id, [
+                    "domains" => [$featureDomain],
+                ]);
+            } catch (\Throwable $e) {
+                // this can happen if let's encrypt rate limit has been hit
+                // it should not be blocking
+                throw new CouldNotObtainLetEncryptCertificateException($e->getMessage(), 42, $e);
+            }
+        }
     }
 
     /**
