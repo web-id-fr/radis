@@ -56,6 +56,7 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
         $this->comment('Creating forge site : '.$featureDomain.' ...');
 
         $site = $this->forgeService->createForgeSite($this->forgeServer, $siteName, $gitBranch, $databaseName);
+
         try {
             $this->forgeService->createLetEncryptCertificate($this->forgeServer, $siteName, $site);
         } catch (CouldNotObtainLetEncryptCertificateException $e) {
