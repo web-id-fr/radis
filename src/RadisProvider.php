@@ -9,6 +9,7 @@ use WebId\Radis\Console\Commands\CreateReviewAppCommand;
 use WebId\Radis\Console\Commands\DeployScriptCommand;
 use WebId\Radis\Console\Commands\DestroyCommand;
 use WebId\Radis\Console\Commands\EnvCommand;
+use WebId\Radis\Console\Commands\GetUrlCommand;
 use WebId\Radis\Console\Commands\UpdateCommand;
 use WebId\Radis\Services\ForgeService;
 use WebId\Radis\Services\ForgeServiceContract;
@@ -65,9 +66,10 @@ class RadisProvider extends ServiceProvider
         $this->commands([
             CreateOrUpdateCommand::class,
             CreateReviewAppCommand::class,
+            DeployScriptCommand::class,
             DestroyCommand::class,
             EnvCommand::class,
-            DeployScriptCommand::class,
+            GetUrlCommand::class,
             UpdateCommand::class,
         ]);
     }

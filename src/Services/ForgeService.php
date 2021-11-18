@@ -156,8 +156,7 @@ class ForgeService implements ForgeServiceContract
     public function createLetEncryptCertificate(Server $forgeServer, $siteName, Site $site): void
     {
         $featureDomain = ForgeFormatter::getFeatureDomain($siteName);
-        $certificates = $this->forge->certificates($forgeServer->id, $site->id);
-        if (empty($certificates)) {
+        if (!$this->hasCertificate($forgeServer, $site)) {
             try {
                 $this->forge->obtainLetsEncryptCertificate($forgeServer->id, $site->id, [
                     "domains" => [$featureDomain],
@@ -168,6 +167,13 @@ class ForgeService implements ForgeServiceContract
                 throw new CouldNotObtainLetEncryptCertificateException($e->getMessage(), 42, $e);
             }
         }
+    }
+
+    public function hasCertificate(Server $forgeServer, Site $site): bool
+    {
+        $certificates = $this->forge->certificates($forgeServer->id, $site->id);
+
+        return !empty($certificates);
     }
 
     /**
