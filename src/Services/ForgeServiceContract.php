@@ -19,6 +19,8 @@ interface ForgeServiceContract
 
     public function createLetEncryptCertificate(Server $forgeServer, $siteName, Site $site): void;
 
+    public function hasCertificate(Server $forgeServer, Site $site): bool;
+
     public function updateSiteEnvFile(Server $forgeServer, Site $site, string $envContent): void;
 
     public function getSiteById(Server $forgeServer, int $siteId): ?Site;
