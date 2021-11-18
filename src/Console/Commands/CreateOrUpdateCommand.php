@@ -2,15 +2,13 @@
 
 namespace WebId\Radis\Console\Commands;
 
-use WebId\Radis\Console\Commands\Traits\CheckSiteName;
 use WebId\Radis\Console\Commands\Traits\HasStub;
+use WebId\Radis\Console\Commands\Traits\TranslateSiteName;
 
 class CreateOrUpdateCommand extends ForgeAbstractCommand
 {
     use HasStub;
-    use CheckSiteName;
-
-    const ERROR_INVALID_SITE_NAME = 2;
+    use TranslateSiteName;
 
     /** @var string */
     protected $signature = 'radis:create-or-update
@@ -38,9 +36,7 @@ class CreateOrUpdateCommand extends ForgeAbstractCommand
         /** @var string $gitBranch */
         $gitBranch = $this->argument('git_branch');
 
-        if (! $this->checkSiteName($siteName)) {
-            return self::ERROR_INVALID_SITE_NAME;
-        }
+        $siteName = $this->translateSiteName($siteName);
 
         /** @var string|null $databaseName */
         $databaseName = $this->option('database');

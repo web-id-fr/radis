@@ -13,7 +13,12 @@ class ForgeFormatter
      */
     public static function getFeatureDatabase(string $siteName, string $databaseName = null): string
     {
-        return $databaseName ?? $siteName . 'db';
+        $databaseName = $databaseName ?? $siteName . 'db';
+
+        // Removing invalid '-' character from the database name
+        $databaseName = str_replace('-', '_', $databaseName);
+
+        return $databaseName;
     }
 
     /**
