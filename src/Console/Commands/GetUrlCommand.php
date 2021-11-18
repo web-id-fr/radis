@@ -33,7 +33,7 @@ class GetUrlCommand extends ForgeAbstractCommand
         $siteName = $this->translateSiteName($siteName);
 
         $site = $this->forgeService->getSiteBySiteName($this->forgeServer, $siteName);
-        if (!$site) {
+        if (! $site) {
             $this->error('Site does not exist, could not get its url.');
             
             return 1;
