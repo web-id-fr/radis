@@ -143,8 +143,6 @@ class ForgeService implements ForgeServiceContract
             "composer" => false,
         ]);
 
-        $site->enableQuickDeploy();
-
         return $site;
     }
 
