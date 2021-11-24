@@ -3,9 +3,12 @@
 namespace WebId\Radis\Console\Commands;
 
 use WebId\Radis\Classes\ForgeFormatter;
+use WebId\Radis\Console\Commands\Traits\TranslateSiteName;
 
 class DestroyCommand extends ForgeAbstractCommand
 {
+    use TranslateSiteName;
+
     /** @var string */
     protected $signature = 'radis:destroy
                             {site_name : Name to set on forge}
@@ -25,6 +28,8 @@ class DestroyCommand extends ForgeAbstractCommand
 
         /** @var string $siteName */
         $siteName = $this->argument('site_name');
+        $siteName = $this->translateSiteName($siteName);
+
         /** @var string $databaseName */
         $databaseName = $this->option('database');
 
@@ -56,6 +61,6 @@ class DestroyCommand extends ForgeAbstractCommand
 
         $this->info('Nothing to destroy');
 
-        return 0;
+        return 1;
     }
 }
