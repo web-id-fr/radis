@@ -13,12 +13,15 @@ use WebId\Radis\Services\Exceptions\CouldNotObtainLetEncryptCertificateException
 
 class ForgeService implements ForgeServiceContract
 {
+    // Default timeout to 10 minutes
+    const DEFAULT_FORGE_TIMEOUT = 600;
+
     private Forge $forge;
 
     public function __construct()
     {
         $this->forge = new Forge(Config::get('radis.forge.token', ''));
-        $this->forge->setTimeout(180);
+        $this->forge->setTimeout(Config::get('radis.forge.timeout', self::DEFAULT_FORGE_TIMEOUT));
     }
 
     /**
@@ -113,7 +116,7 @@ class ForgeService implements ForgeServiceContract
         $featureDatabasePassword = ForgeFormatter::getFeatureDatabasePassword();
         $featureDomain = ForgeFormatter::getFeatureDomain($siteName);
 
-        $site = $this->forge->setTimeout(120)->createSite(
+        $site = $this->forge->createSite(
             $forgeServer->id,
             [
                 "domain" => $featureDomain,

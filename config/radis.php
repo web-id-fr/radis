@@ -46,6 +46,7 @@ return [
         'database_password' => env('RADIS_DATABASE_PASSWORD', 'root'),
         'lets_encrypt_type' => env('RADIS_LETS_ENCRYPT_TYPE'),
         'lets_encrypt_api_key' => env('RADIS_LETS_ENCRYPT_API_KEY'),
+        'timeout' => env('RADIS_FORGE_TIMEOUT'),
     ],
 
     /*
