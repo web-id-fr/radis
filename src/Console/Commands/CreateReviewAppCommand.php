@@ -111,7 +111,7 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
      */
     private function waitingDestroy(string $siteName): void
     {
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= 60; $i++) {
             if ($this->getSiteByName($siteName) === null) {
                 return;
             }
