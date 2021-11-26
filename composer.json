@@ -42,7 +42,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": "^7.4|^8.0",
-        "laravel/forge-sdk": "^3.6"
+        "laravel/forge-sdk": "^3.10"
     },
     "require-dev": {
         "nunomaduro/larastan": "^0.6.13",
