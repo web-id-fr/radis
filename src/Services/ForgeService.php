@@ -214,6 +214,30 @@ class ForgeService implements ForgeServiceContract
         return null;
     }
 
+    public function checkLastDeployment(Site $site): void
+    {
+        $deployments = $site->getDeploymentHistory();
+        if (empty($deployments) || empty($deployments['deployments'])) {
+            throw new \RuntimeException(sprintf(
+                'No deployments found for site "%s".',
+                $site->name
+            ));
+        }
+
+        $lastDeployment = $deployments['deployments'][0];
+        if ($lastDeployment['status'] === 'finished') {
+            return;
+        }
+
+        $lastDeploymentOutput = $site->getDeploymentHistoryOutput($lastDeployment['id']);
+
+        throw new \RuntimeException(sprintf(
+            'Last deployment for site "%s" failed : %s',
+            $site->name,
+            "\n\n" . $lastDeploymentOutput['output'] ?? 'No output available.'
+        ));
+    }
+
     /**
      * @param Server $forgeServer
      * @param string $databaseName

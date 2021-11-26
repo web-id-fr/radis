@@ -26,4 +26,6 @@ interface ForgeServiceContract
     public function getSiteById(Server $forgeServer, int $siteId): ?Site;
 
     public function getSiteBySiteName(Server $forgeServer, string $siteName): ?Site;
+
+    public function checkLastDeployment(Site $site): void;
 }

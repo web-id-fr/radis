@@ -77,7 +77,10 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
 
         $this->comment('Waiting for site to be deployed...');
         $wait = true;
-        $site->deploySite($wait);
+        $site = $site->deploySite($wait);
+
+        $this->comment('Checking last deployment...');
+        $this->forgeService->checkLastDeployment($site);
 
         $this->info("The review app `${siteName}` has been created on branch `${gitBranch}`");
         $this->info("Access it with ${scheme}://${featureDomain}");
