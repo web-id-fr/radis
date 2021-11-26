@@ -11,6 +11,12 @@ trait TranslateSiteName
     {
         $siteName = preg_replace("/[^\w_]+/i", '-', $siteName);
 
+        // limiting the site name or else there is some 
+        // validation errors in Laravel Forge
+        $siteName = substr($siteName, 0, 20);
+
+        $siteName = trim($siteName, '-');
+
         return $siteName;
     }
 }
