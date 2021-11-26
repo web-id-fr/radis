@@ -42,7 +42,14 @@ class CreateOrUpdateCommand extends ForgeAbstractCommand
         $databaseName = $this->option('database');
 
         $site = $this->forgeService->getSiteBySiteName($this->forgeServer, $siteName);
-        if ($site) {
+
+        // If the site does not exist or is not fully installed, we force the creation
+        $siteExists = 
+            $site &&
+            $site->status === 'installed' && 
+            $site->repositoryStatus === 'installed';
+
+        if ($siteExists) {
             $this->info('Site exists, updating Review App');
 
             $this->call('radis:update', [
