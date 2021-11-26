@@ -44,9 +44,9 @@ class CreateOrUpdateCommand extends ForgeAbstractCommand
         $site = $this->forgeService->getSiteBySiteName($this->forgeServer, $siteName);
 
         // If the site does not exist or is not fully installed, we force the creation
-        $siteExists = 
+        $siteExists =
             $site &&
-            $site->status === 'installed' && 
+            $site->status === 'installed' &&
             $site->repositoryStatus === 'installed';
 
         if ($siteExists) {
