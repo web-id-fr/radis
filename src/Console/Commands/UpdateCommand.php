@@ -7,6 +7,7 @@ class UpdateCommand extends ForgeAbstractCommand
     /** @var string */
     protected $signature = 'radis:update
                             {site_name : Site name on forge}
+                            {git_branch : Name of the git branch to deploy}
                             {--site=} : Site ID on forge';
 
     /** @var string */
@@ -23,6 +24,8 @@ class UpdateCommand extends ForgeAbstractCommand
 
         /** @var string $siteName */
         $siteName = $this->argument('site_name');
+        /** @var string $gitBranch */
+        $gitBranch = $this->argument('git_branch');
         /** @var string $siteId */
         $siteId = $this->option('site');
 
@@ -30,6 +33,17 @@ class UpdateCommand extends ForgeAbstractCommand
         if (! $site) {
             return 0;
         }
+
+        $this->comment('Updating site env...');
+        $this->call('radis:env', [
+            'site_name' => $siteName,
+        ]);
+
+        $this->comment('Updating site script deploy...');
+        $this->call('radis:deploy-script', [
+            'site_name' => $siteName,
+            'git_branch' => $gitBranch,
+        ]);
 
         $this->comment("Waiting for `${siteName}` to be deployed...");
 

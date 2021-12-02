@@ -54,6 +54,7 @@ class CreateOrUpdateCommand extends ForgeAbstractCommand
 
             $this->call('radis:update', [
                 'site_name' => $siteName,
+                'git_branch' => $gitBranch,
             ]);
         } else {
             $this->info('Site does not exist, creating Review App');
