@@ -58,6 +58,10 @@ RADIS_LETS_ENCRYPT_TYPE=digitalocean
 RADIS_LETS_ENCRYPT_API_KEY=EXEMPLE98edb566f9917d797fba2c0b05e2f2064ad7771422740181561322961
 ```
 
+**Wildcard certificates**
+
+Due to Let's Encrypt limitations about making too many certificates on a registered domain [(50 per week)](https://letsencrypt.org/docs/rate-limits/), if a [wildcard certificate is set up](https://medium.com/@taylorotwell/wildcard-letsencrypt-certificates-on-forge-d3bdec43692a) on the parent site on Forge, it will be automatically used for the review apps instead of creating a new specific one.
+
 ### 2. ``.env`` stub
 
 After that, you need to adapt the desired .env file for your review app by modifying the stub ``stubs/env.stub``
