@@ -28,4 +28,6 @@ interface ForgeServiceContract
     public function getSiteBySiteName(Server $forgeServer, string $siteName): ?Site;
 
     public function checkLastDeployment(Site $site): void;
+
+    public function installParentPreProductionWebsiteWildcardCertificate(Server $forgeServer, Site $site): void;
 }
