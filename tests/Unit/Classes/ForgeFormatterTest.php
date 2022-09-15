@@ -22,7 +22,7 @@ class ForgeFormatterTest extends TestCase
     /** @test */
     public function it_will_format_database_user()
     {
-        $this->assertEquals('fakedbuser', ForgeFormatter::getFeatureDatabaseUser('fake'));
+        $this->assertEquals('RAfakedbuser', ForgeFormatter::getFeatureDatabaseUser('fake'));
     }
 
     /** @test */
