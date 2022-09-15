@@ -141,7 +141,7 @@ class ForgeService implements ForgeServiceContract
         } catch (ValidationException $e) {
             throw new \RuntimeException(
                 sprintf(
-                    "Failed to create Databas on Forge with:\n" .
+                    "Failed to create database user on Forge with:\n" .
                     "- name \"%s\"\n" .
                     "- password \"%s\"\n" .
                     "- database \"%s\"\n",
