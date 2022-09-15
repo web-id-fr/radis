@@ -58,6 +58,7 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
             $site = $this->forgeService->createForgeSite($this->forgeServer, $siteName, $gitBranch, $databaseName);
         } catch (ValidationException $e) {
             $this->error('Failed to create Site on Forge :' . "\n" . implode("\n", $e->errors));
+
             return 1;
         }
 
