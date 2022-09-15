@@ -61,6 +61,7 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
                 'Failed to create Site on Forge :' . "\n" .
                 implode("\n", collect($e->errors)->flatten())
             );
+
             return 1;
         }
 
