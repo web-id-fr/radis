@@ -3,6 +3,7 @@
 namespace WebId\Radis\Services;
 
 use Illuminate\Support\Facades\Config;
+use Laravel\Forge\Exceptions\ValidationException;
 use Laravel\Forge\Forge;
 use Laravel\Forge\Resources\Database;
 use Laravel\Forge\Resources\DatabaseUser;
@@ -131,11 +132,26 @@ class ForgeService implements ForgeServiceContract
         /** @var Database $database */
         $database = $this->searchDatabase($forgeServer, $featureDatabaseName);
 
-        $this->forge->createDatabaseUser($forgeServer->id, [
-            "name" => $featureDatabaseUser,
-            "password" => $featureDatabasePassword,
-            "databases" => [$database->id],
-        ], $wait = true);
+        try {
+            $this->forge->createDatabaseUser($forgeServer->id, [
+                "name" => $featureDatabaseUser,
+                "password" => $featureDatabasePassword,
+                "databases" => [$database->id],
+            ], $wait = true);
+        } catch (ValidationException $e) {
+            throw new \RuntimeException(
+                sprintf(
+                    "Failed to create Databas on Forge with:\n" .
+                    "- name \"%s\"\n" .
+                    "- password \"%s\"\n" .
+                    "- database \"%s\"\n",
+                    $featureDatabaseUser,
+                    $featureDatabasePassword,
+                    $database->id,
+                ) . "Errors :\n" .
+                implode("\n", collect($e->errors)->flatten()->toArray())
+            );
+        }
 
         $site->changePHPVersion(config('radis.forge.site_php_version'));
 
