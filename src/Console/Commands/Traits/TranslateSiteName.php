@@ -13,7 +13,7 @@ trait TranslateSiteName
 
         // limiting the site name or else there is some
         // validation errors in Laravel Forge
-        $siteName = substr($siteName, 0, 20);
+        $siteName = substr($siteName, 0, 15);
 
         $siteName = trim($siteName, '-');
 
