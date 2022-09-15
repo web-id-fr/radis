@@ -61,7 +61,7 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
             );
         } catch (ValidationException $e) {
             $this->error(
-                sprinf(
+                sprintf(
                     "Failed to create Site on Forge with:\n" .
                     "- forgeServer \"%s\"\n" .
                     "- siteName \"%s\"\n" .
