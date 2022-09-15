@@ -59,7 +59,7 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
         } catch (ValidationException $e) {
             $this->error(
                 'Failed to create Site on Forge :' . "\n" .
-                implode("\n", collect($e->errors)->flatten())
+                implode("\n", collect($e->errors)->flatten()->toArray())
             );
 
             return 1;
