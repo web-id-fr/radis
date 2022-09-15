@@ -62,7 +62,7 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
                 implode("\n", collect($e->errors)->flatten()->toArray())
             );
 
-            return 1;
+            throw $e;
         }
 
         $this->comment('Setup parent pre-production website wildcard certificate');
