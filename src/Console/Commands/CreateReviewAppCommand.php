@@ -2,6 +2,7 @@
 
 namespace WebId\Radis\Console\Commands;
 
+use Laravel\Forge\Exceptions\ValidationException;
 use WebId\Radis\Classes\ForgeFormatter;
 use WebId\Radis\Console\Commands\Traits\HasStub;
 use WebId\Radis\Console\Commands\Traits\TranslateSiteName;
@@ -51,7 +52,31 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
 
         $this->comment('Creating forge site : '.$featureDomain.' ...');
 
-        $site = $this->forgeService->createForgeSite($this->forgeServer, $siteName, $gitBranch, $databaseName);
+        try {
+            $site = $this->forgeService->createForgeSite(
+                $this->forgeServer,
+                $siteName,
+                $gitBranch,
+                $databaseName
+            );
+        } catch (ValidationException $e) {
+            $this->error(
+                sprintf(
+                    "Failed to create Site on Forge with:\n" .
+                    "- forgeServer \"%s\"\n" .
+                    "- siteName \"%s\"\n" .
+                    "- gitBranch \"%s\"\n" .
+                    "- databaseName \"%s\"\n",
+                    $this->forgeServer->name,
+                    $siteName,
+                    $gitBranch,
+                    $databaseName
+                ) . "Errors :\n" .
+                implode("\n", collect($e->errors)->flatten()->toArray())
+            );
+
+            throw $e;
+        }
 
         try {
             $this->forgeService->createLetEncryptCertificate($this->forgeServer, $siteName, $site);

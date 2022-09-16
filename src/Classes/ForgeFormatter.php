@@ -28,7 +28,10 @@ class ForgeFormatter
      */
     public static function getFeatureDatabaseUser(string $siteName, string $databaseName = null): string
     {
-        return self::getFeatureDatabase($siteName, $databaseName) . 'user';
+        // new limit on forge: 16 chars max !
+        // else, validation errors in Laravel Forge
+        // 'RA' for review app to prevent conflicts with other users
+        return substr('RA' . self::getFeatureDatabase($siteName, $databaseName), 0, 14);
     }
 
     /**
