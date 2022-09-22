@@ -5,11 +5,14 @@ namespace WebId\Radis\Services;
 use Illuminate\Support\Facades\Config;
 use Laravel\Forge\Exceptions\ValidationException;
 use Laravel\Forge\Forge;
+use Laravel\Forge\Resources\Certificate;
 use Laravel\Forge\Resources\Database;
 use Laravel\Forge\Resources\DatabaseUser;
 use Laravel\Forge\Resources\Server;
 use Laravel\Forge\Resources\Site;
 use WebId\Radis\Classes\ForgeFormatter;
+use WebId\Radis\Services\Exceptions\CouldNotFindParentPreProductionSiteException;
+use WebId\Radis\Services\Exceptions\CouldNotFindParentPreProductionSiteWildcardCertificateException;
 use WebId\Radis\Services\Exceptions\CouldNotObtainLetEncryptCertificateException;
 
 class ForgeService implements ForgeServiceContract
@@ -254,6 +257,42 @@ class ForgeService implements ForgeServiceContract
         ));
     }
 
+    public function installParentPreProductionWebsiteWildcardCertificate(Server $forgeServer, Site $site): void
+    {
+        /** @var ?Site $parentPreProductionSite */
+        $parentPreProductionSite = $this->getReviewAppPreProductionParentSiteId($site);
+
+        if ($parentPreProductionSite === null) {
+            // old pre-production websites do not use wildcard certificates,
+            // we handle this case by creating a specific Let's Encrypt specific if it happens
+            throw new CouldNotFindParentPreProductionSiteException(
+                sprintf(
+                    "Could not find parent pre-production website %s for review app %s",
+                    Config::get('radis.forge.server_domain'),
+                    $site->name
+                )
+            );
+        }
+
+        /** @var ?Certificate $wildcardCertificate */
+        $wildcardCertificate = $this->getPreProductionSiteWildcardCertificate($parentPreProductionSite);
+
+        if ($wildcardCertificate === null) {
+            // old pre-production websites do not use wildcard certificates,
+            // we handle this case by creating a specific Let's Encrypt specific if it happens
+            throw new CouldNotFindParentPreProductionSiteWildcardCertificateException(
+                sprintf(
+                    "Could not find wildcard certificate on parent pre-production website %s" .
+                    "for review app %s",
+                    Config::get('radis.forge.server_domain'),
+                    $site->name
+                )
+            );
+        }
+
+        $this->applyWildcardCertificateToNginxFile($parentPreProductionSite, $site, $wildcardCertificate);
+    }
+
     /**
      * @param Server $forgeServer
      * @param string $databaseName
@@ -284,5 +323,75 @@ class ForgeService implements ForgeServiceContract
         }
 
         return null;
+    }
+
+    protected function getReviewAppPreProductionParentSiteId(site $reviewAppSite): ?Site
+    {
+        $preProductionDomain = explode('.', $reviewAppSite->name);
+        array_shift($preProductionDomain);
+        $preProductionDomain = implode('.', $preProductionDomain);
+
+        foreach ($this->forge->sites($reviewAppSite->serverId) as $site) {
+            if ($site->name === $preProductionDomain) {
+                return $site;
+            }
+        }
+
+        return null;
+    }
+
+    protected function getPreProductionSiteWildcardCertificate(Site $preProductionSite): ?Certificate
+    {
+        $certificates = $this->forge->certificates($preProductionSite->serverId, $preProductionSite->id);
+
+        foreach ($certificates as $certificate) {
+            $domains = $certificate->domain;
+
+            foreach (explode(',', $domains) as $domain) {
+                if ($domain === '*.' . $preProductionSite->name) {
+                    return $certificate;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    protected function applyWildcardCertificateToNginxFile(
+        Site $preProductionSite,
+        Site $reviewAppSite,
+        Certificate $wildcardCertificate
+    ): void {
+        $nginxFileContent = $this->forge->siteNginxFile($reviewAppSite->serverId, $reviewAppSite->id);
+
+        // replace port 80 with 443
+
+        $nginxFileContent = str_replace(
+            'listen 80;',
+            'listen 443 ssl http2;',
+            $nginxFileContent
+        );
+
+        $nginxFileContent = str_replace(
+            'listen [::]:80;',
+            'listen [::]:443 ssl http2;',
+            $nginxFileContent
+        );
+
+        // append certificate lines before "   ssl_protocols (...)"
+
+        $nginxFileContent = str_replace(
+            "\n" . '    ssl_protocols',
+            "\n" . '    # Wildcard from parent pre-production website' . "\n" .
+            '    ssl_certificate /etc/nginx/ssl/' . $preProductionSite->name . '/' . $wildcardCertificate->id .
+            '/server.crt;' . "\n" .
+            '    ssl_certificate_key /etc/nginx/ssl/' . $preProductionSite->name . '/' . $wildcardCertificate->id .
+            '/server.key;' . "\n\n" .
+            '    ssl_protocols',
+            $nginxFileContent
+        );
+
+        // it will automatically reload nginx
+        $this->forge->updateSiteNginxFile($reviewAppSite->serverId, $reviewAppSite->id, $nginxFileContent);
     }
 }

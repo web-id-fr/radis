@@ -6,6 +6,8 @@ use Laravel\Forge\Exceptions\ValidationException;
 use WebId\Radis\Classes\ForgeFormatter;
 use WebId\Radis\Console\Commands\Traits\HasStub;
 use WebId\Radis\Console\Commands\Traits\TranslateSiteName;
+use WebId\Radis\Services\Exceptions\CouldNotFindParentPreProductionSiteException;
+use WebId\Radis\Services\Exceptions\CouldNotFindParentPreProductionSiteWildcardCertificateException;
 use WebId\Radis\Services\Exceptions\CouldNotObtainLetEncryptCertificateException;
 
 class CreateReviewAppCommand extends ForgeAbstractCommand
@@ -78,15 +80,38 @@ class CreateReviewAppCommand extends ForgeAbstractCommand
             throw $e;
         }
 
+        $this->comment('Setup parent pre-production website wildcard certificate');
+        $wildcardCertificateSetupHasFailed = false;
+
         try {
-            $this->forgeService->createLetEncryptCertificate($this->forgeServer, $siteName, $site);
-        } catch (CouldNotObtainLetEncryptCertificateException $e) {
-            $scheme = 'http';
+            $this->forgeService->installParentPreProductionWebsiteWildcardCertificate($this->forgeServer, $site);
+        } catch (CouldNotFindParentPreProductionSiteException $e) {
             $this->error(
-                "Could not obtain let's encrypt certificate.\n" .
-                "It can be because let's encrypt rate limit has been hit.\n" .
+                "Could not find parent pre-production website for wildcard certificate setup.\n" .
+                "Setup regular specific let's encrypt certificate instead\n" .
                 $e->getMessage()
             );
+            $wildcardCertificateSetupHasFailed = true;
+        } catch (CouldNotFindParentPreProductionSiteWildcardCertificateException $e) {
+            $this->error(
+                "Could not find wildcard certificate on parent pre-production website.\n" .
+                "Setup regular specific let's encrypt certificate instead\n" .
+                $e->getMessage()
+            );
+            $wildcardCertificateSetupHasFailed = true;
+        }
+
+        if ($wildcardCertificateSetupHasFailed) {
+            try {
+                $this->forgeService->createLetEncryptCertificate($this->forgeServer, $siteName, $site);
+            } catch (CouldNotObtainLetEncryptCertificateException $e) {
+                $scheme = 'http';
+                $this->error(
+                    "Could not obtain let's encrypt certificate.\n" .
+                    "It can be because let's encrypt rate limit has been hit.\n" .
+                    $e->getMessage()
+                );
+            }
         }
 
         $this->comment('Updating site env...');

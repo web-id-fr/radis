@@ -46,6 +46,23 @@ class ForgeServiceTesting implements ForgeServiceContract
         return $this->createFakeSite();
     }
 
+    public function createLetEncryptCertificate(Server $forgeServer, $siteName, Site $site): void
+    {
+    }
+
+    public function hasCertificate(Server $forgeServer, Site $site): bool
+    {
+        return true;
+    }
+
+    public function checkLastDeployment(Site $site): void
+    {
+    }
+
+    public function installParentPreProductionWebsiteWildcardCertificate(Server $forgeServer, Site $site): void
+    {
+    }
+
     protected function createFakeServer(): Server
     {
         $server = new Server([]);
