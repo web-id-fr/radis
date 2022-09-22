@@ -17,7 +17,7 @@ interface ForgeServiceContract
 
     public function createForgeSite(Server $forgeServer, string $siteName, string $gitBranch, string $databaseName = null): Site;
 
-    public function createLetEncryptCertificate(Server $forgeServer, $siteName, Site $site): void;
+    public function createLetEncryptCertificate(Server $forgeServer, string $siteName, Site $site): void;
 
     public function hasCertificate(Server $forgeServer, Site $site): bool;
 

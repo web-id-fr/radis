@@ -173,7 +173,7 @@ class ForgeService implements ForgeServiceContract
      * @param string $siteName
      * @param Site $site
      */
-    public function createLetEncryptCertificate(Server $forgeServer, $siteName, Site $site): void
+    public function createLetEncryptCertificate(Server $forgeServer, string $siteName, Site $site): void
     {
         $featureDomain = ForgeFormatter::getFeatureDomain($siteName);
         if (! $this->hasCertificate($forgeServer, $site)) {

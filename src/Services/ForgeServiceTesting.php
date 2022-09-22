@@ -46,7 +46,7 @@ class ForgeServiceTesting implements ForgeServiceContract
         return $this->createFakeSite();
     }
 
-    public function createLetEncryptCertificate(Server $forgeServer, $siteName, Site $site): void
+    public function createLetEncryptCertificate(Server $forgeServer, string $siteName, Site $site): void
     {
     }
 
