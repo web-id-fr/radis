@@ -31,7 +31,7 @@ class ForgeFormatter
         // new limit on forge: 16 chars max !
         // else, validation errors in Laravel Forge
         // 'RA' for review app to prevent conflicts with other users
-        return substr('RA' . self::getFeatureDatabase($siteName, $databaseName), 0, 14);
+        return substr('ra_' . self::getFeatureDatabase($siteName, $databaseName), 0, 13);
     }
 
     /**
