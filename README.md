@@ -114,3 +114,11 @@ php artisan radis:env mySiteName customDatabaseName
 ```shell
 php artisan radis:deploy-script mySiteName myGitBranch
 ```
+
+## Credits
+
+- [Leo Tiollier](https://github.com/LTiollier)
+
+## License
+
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
